@@ -1,26 +1,434 @@
 @import "tailwindcss";
 
+/* =========================================
+   MVN J&S & RVR COLLEGE
+   GLOBAL DESIGN SYSTEM
+========================================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand Colors */
+  --hp-teal: #075e59;
+  --hp-deep-teal: #064b47;
+
+  /* Gold Colors */
+  --hp-gold: #c3a365;
+  --hp-gold-light: #e8d5aa;
+  --hp-gold-dim: #92723a;
+  --hp-gold-primary: #967613;
+  --hp-affiliation: #807338;
+  --hp-address: #80505b;
+  /* Background Colors */
+  --hp-ivory: #fffdf8;
+  --hp-bg-ivory: #fffdf8;
+  --hp-bg-parch: #f5f1e7;
+  --hp-bg-teal-light: #f5f1e7;
+
+  /* Typography Colors */
+  --hp-text: #354b4a;
+  --hp-text-muted: #6b8080;
+
+  /* Typography */
+  --hp-font-serif: Georgia, "Times New Roman", serif;
+  --hp-font-sans: system-ui, -apple-system, sans-serif;
+
+  /* Heading Sizes */
+  --hp-h2: clamp(26px, 3vw, 38px);
+  --hp-h3: clamp(16px, 1.5vw, 20px);
+
+  /* Layout */
+  --hp-section-pad-y: 72px;
+  --hp-section-pad-x: 28px;
+  --hp-container: 1280px;
+
+  /* Cards */
+  --hp-radius-card: 16px;
+  --hp-radius-icon: 50%;
+
+  --hp-shadow-card:
+    0 4px 18px rgba(6, 75, 71, 0.07);
+
+  --hp-shadow-hover:
+    0 18px 44px rgba(6, 75, 71, 0.14),
+    0 4px 12px rgba(6, 75, 71, 0.07);
+
+  --hp-border-card:
+    1px solid rgba(195, 163, 101, 0.28);
+
+  /* Transitions */
+  --hp-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --hp-dur-card: 0.38s;
+  --hp-dur-anim: 0.65s;
 }
+
+/* =========================================
+   TAILWIND CSS THEME MAPPING
+========================================= */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-primary: var(--hp-teal);
+  --color-primary-dark: var(--hp-deep-teal);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-secondary: var(--hp-gold);
+  --color-gold-primary:var(--hp-gold-primary);
+  --color-gold-light: var(--hp-gold-light);
+  --color-gold-muted: var(--hp-gold-dim);
+  --color-affiliation: var(--hp-affiliation);
+  --color-address: var(--hp-address);
+  --color-background: var(--hp-bg-ivory);
+  --color-background-secondary: var(--hp-bg-parch);
+  --color-background-card: var(--hp-ivory);
+
+  --color-heading: var(--hp-teal);
+  --color-foreground: var(--hp-text);
+  --color-muted: var(--hp-text-muted);
+
+  --color-border: var(--hp-gold);
+  
+}
+@theme {
+  --font-sans: var(--font-inter), sans-serif;
+}
+/* =========================================
+   GLOBAL RESET
+========================================= */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: rgba(195, 163, 101, 0.28);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+
+    background-color: var(--hp-bg-ivory);
+    color: var(--hp-text);
+
+    font-family: var(--hp-font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--hp-teal);
+    font-family: var(--hp-font-serif);
+  }
+
+  p {
+    color: var(--hp-text);
+    line-height: 1.78;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  ::selection {
+    background: var(--hp-teal);
+    color: var(--hp-ivory);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* =========================================
+   REUSABLE BACKGROUNDS
+========================================= */
+
+.bg-ivory {
+  background-color: var(--hp-bg-ivory);
+}
+
+.bg-parchment {
+  background-color: var(--hp-bg-parch);
+}
+
+.bg-teal {
+  background-color: var(--hp-teal);
+}
+
+.bg-deep-teal {
+  background-color: var(--hp-deep-teal);
+}
+
+/* =========================================
+   REUSABLE TEXT COLORS
+========================================= */
+
+.text-teal {
+  color: var(--hp-teal);
+}
+
+.text-deep-teal {
+  color: var(--hp-deep-teal);
+}
+
+.text-gold {
+  color: var(--hp-gold);
+}
+
+.text-gold-muted {
+  color: var(--hp-gold-dim);
+}
+
+.text-body {
+  color: var(--hp-text);
+}
+
+.text-muted {
+  color: var(--hp-text-muted);
+}
+
+/* =========================================
+   SHARED CARD DESIGN
+========================================= */
+
+.hp-card {
+  background: var(--hp-ivory);
+  border: var(--hp-border-card);
+  border-radius: var(--hp-radius-card);
+  box-shadow: var(--hp-shadow-card);
+
+  transition:
+    transform var(--hp-dur-card) var(--hp-ease),
+    box-shadow var(--hp-dur-card) var(--hp-ease),
+    border-color var(--hp-dur-card) ease;
+}
+
+.hp-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--hp-shadow-hover);
+  border-color: rgba(195, 163, 101, 0.65);
+}
+
+/* =========================================
+   SECTION HEADING
+========================================= */
+
+.hp-eyebrow {
+  color: var(--hp-gold-dim);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+}
+
+.hp-section-title {
+  color: var(--hp-teal);
+  font-family: var(--hp-font-serif);
+  font-size: var(--hp-h2);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.hp-section-description {
+  color: var(--hp-text);
+  font-size: 15.5px;
+  line-height: 1.75;
+}
+
+/* =========================================
+   GLOBAL ANIMATIONS
+========================================= */
+
+@keyframes hp-fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hp-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hp-fade-left {
+  from {
+    opacity: 0;
+    transform: translateX(-48px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes hp-fade-right {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes hp-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-up {
+  animation: hp-fade-up 0.65s var(--hp-ease) both;
+}
+
+.animate-fade-down {
+  animation: hp-fade-down 0.65s var(--hp-ease) both;
+}
+
+.animate-fade-left {
+  animation: hp-fade-left 0.65s var(--hp-ease) both;
+}
+
+.animate-fade-right {
+  animation: hp-fade-right 0.65s var(--hp-ease) both;
+}
+
+/* =========================================
+   SHIMMER
+========================================= */
+
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #f0ede5 25%,
+    #e5e0d5 37%,
+    #f0ede5 63%
+  );
+
+  background-size: 400px 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--hp-bg-parch);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--hp-teal);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hp-deep-teal);
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* Flash news marquee */
+.flash-marquee-track {
+  animation: flash-marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.flash-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.flash-marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 24px,
+    #000 calc(100% - 24px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 24px,
+    #000 calc(100% - 24px),
+    transparent 100%
+  );
+}
+
+@keyframes flash-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash-marquee-track {
+    animation: none;
+  }
+  .flash-marquee-mask {
+    overflow-x: auto;
+  }
 }
