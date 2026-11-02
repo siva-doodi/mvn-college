@@ -9,472 +9,251 @@ import {
   Navigation,
 } from "lucide-react";
 
-import Text from "@/components/ui/Text";
-import Container from "@/components/ui/Container";
-
-const contactDetails = [
+/* Contact Details */
+const CONTACT_CARDS = [
   {
-    Icon: MapPin,
-    label: "OUR LOCATION",
-    content: (
-      <>
-        <p>Main Road, Malikipuram – 533253</p>
-        <p>Dr. B.R. Ambedkar Konaseema District</p>
-        <p>Andhra Pradesh, India</p>
-      </>
-    ),
+    id: "address",
+    icon: MapPin,
+    label: "Our Location",
+    lines: [
+      "Main Road, Malikipuram – 533253",
+      "Dr. B.R. Ambedkar Konaseema District",
+      "Andhra Pradesh, India",
+    ],
   },
   {
-    Icon: Phone,
-    label: "PHONE / MOBILE",
-    content: (
-      <>
-        <a href="tel:08862-294077">08862-294077</a>
-        <a href="tel:9396939655">9396939655</a>
-      </>
-    ),
+    id: "phone",
+    icon: Phone,
+    label: "Phone / Mobile",
+    lines: [
+      { text: "08862-294077", href: "tel:08862294077" },
+      { text: "9396939655", href: "tel:9396939655" },
+    ],
   },
   {
-    Icon: Mail,
-    label: "EMAIL",
-    content: (
-      <>
-        <a href="mailto:primnvm@mvnjsrvcollege.ac.in">
-          primnvm@mvnjsrvcollege.ac.in
-        </a>
-
-        <a href="mailto:primnvm@yahoo.com">
-          primnvm@yahoo.com
-        </a>
-
-        <a href="mailto:malikipuram.mvnrvjrc@gmail.com">
-          malikipuram.mvnrvjrc@gmail.com
-        </a>
-      </>
-    ),
+    id: "email",
+    icon: Mail,
+    label: "Email",
+    lines: [
+      {
+        text: "prinmvn@mvnjsrvrcollege.ac.in",
+        href: "mailto:prinmvn@mvnjsrvrcollege.ac.in",
+      },
+      {
+        text: "prinmvn@yahoo.com",
+        href: "mailto:prinmvn@yahoo.com",
+      },
+      {
+        text: "malikipuram.mvnrvr.jkc@gmail.com",
+        href: "mailto:malikipuram.mvnrvr.jkc@gmail.com",
+      },
+    ],
   },
 ];
+
+/* Google Maps */
+const MAP_EMBED_SRC =
+  "https://maps.google.com/maps?q=MVN+JS+%26+RVR+College+of+Arts+and+Science+Malikipuram+Andhra+Pradesh+533253&output=embed&z=15";
+
+const DIRECTIONS_HREF =
+  "https://www.google.com/maps/dir/?api=1&destination=MVN+JS+%26+RVR+College+of+Arts+and+Science,+Malikipuram,+Andhra+Pradesh+533253";
 
 export default function ContactSection() {
   const headingRef = useRef(null);
   const cardsRef = useRef([]);
-  const websiteRef = useRef(null);
   const mapRef = useRef(null);
-  const directionsRef = useRef(null);
 
+  /* Scroll Animations */
   useEffect(() => {
-    const elements = [
-      headingRef.current,
-      ...cardsRef.current,
-      websiteRef.current,
-      mapRef.current,
-      directionsRef.current,
-    ].filter(Boolean);
+    const observers = [];
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove(
-              "opacity-0",
-              "translate-y-10"
+    const observe = (element, visibleClasses) => {
+      if (!element) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          visibleClasses.split(" ").forEach((className) => {
+            element.classList.toggle(
+              className,
+              entry.isIntersecting
             );
+          });
+        },
+        {
+          threshold: 0.15,
+        }
+      );
 
-            entry.target.classList.add(
-              "opacity-100",
-              "translate-y-0"
-            );
-          } else {
-            entry.target.classList.remove(
-              "opacity-100",
-              "translate-y-0"
-            );
+      observer.observe(element);
+      observers.push(observer);
+    };
 
-            entry.target.classList.add(
-              "opacity-0",
-              "translate-y-10"
-            );
-          }
-        });
-      },
-      {
-        threshold: 0.15,
-      }
-    );
+    observe(headingRef.current, "opacity-100 translate-y-0");
+    observe(mapRef.current, "opacity-100 translate-x-0");
 
-    elements.forEach((element) => observer.observe(element));
+    cardsRef.current.forEach((card) => {
+      observe(card, "opacity-100 translate-y-0");
+    });
 
-    return () => observer.disconnect();
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
   }, []);
-
-  const mapLocation =
-    "MVN JS & RVR College of Arts and Science, Malikipuram, Andhra Pradesh 533253";
-
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-    mapLocation
-  )}`;
 
   return (
     <section
       id="contact"
-      className="
-        w-full
-        bg-[#fffdf9]
-        py-14
-        sm:py-16
-        lg:py-[68px]
-      "
+      className="relative overflow-hidden bg-background px-5 py-20 sm:px-8 lg:py-24"
     >
-      <Container size="wide">
+      {/* Decorative Background */}
+      <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-primary/5 blur-3xl" />
 
-        {/* SECTION HEADING */}
+      <div className="pointer-events-none absolute -right-32 bottom-10 h-72 w-72 rounded-full bg-secondary/20 blur-3xl" />
+
+      <div className="relative mx-auto max-w-7xl">
+
+        {/* Section Heading */}
         <div
           ref={headingRef}
-          className="
-            mx-auto
-            mb-9
-            flex
-            max-w-[600px]
-            flex-col
-            items-center
-            text-center
-
-            opacity-0
-            translate-y-10
-            transition-all
-            duration-700
-            ease-out
-
-            sm:mb-10
-          "
+          className="mx-auto mb-14 max-w-2xl translate-y-8 text-center opacity-0 transition-all duration-700"
         >
-          <Text
-            variant="eyebrow"
-            color="goldMuted"
-            className="
-              mb-2
-              text-[10px]
-              font-bold
-              tracking-[2px]
-              sm:text-[11px]
-            "
-          >
-            CONTACT & LOCATION
-          </Text>
+          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-gold sm:text-sm">
+            <span className="h-px w-7 bg-secondary" />
+            Contact &amp; Location
+            <span className="h-px w-7 bg-secondary" />
+          </span>
 
-          <Text
-            as="h2"
-            variant="h2"
-            color="primary"
-            className="
-              text-[26px]
-              font-bold
-              leading-tight
-              sm:text-[29px]
-              md:text-[32px]
-            "
-          >
+          <h2 className="mt-4 font-serif text-3xl font-bold text-primary sm:text-4xl lg:text-5xl">
             Get in Touch
-          </Text>
+          </h2>
 
-          <Text
-            variant="small"
-            color="body"
-            align="center"
-            className="
-              mt-3
-              text-[12px]
-              leading-relaxed
-              sm:text-[13px]
-            "
-          >
-            We&apos;re here to help. Reach us by phone, email or visit us
-            on campus.
-          </Text>
+          <p className="mt-5 text-sm leading-7 text-muted sm:text-base">
+            We're here to help. Reach us by phone, email or visit us on
+            campus.
+          </p>
 
-          {/* GOLD DIVIDER */}
-          <span className="mt-4 h-[2px] w-12 bg-[#c3a365]" />
+          <div className="mx-auto mt-6 h-1 w-20 rounded-full bg-secondary" />
         </div>
 
-        {/* CONTACT CONTENT */}
-        <div
-          className="
-            mx-auto
-            grid
-            max-w-[1020px]
-            grid-cols-1
-            gap-6
+        {/* Main Content */}
+        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-14">
 
-            lg:grid-cols-[315px_1fr]
-            lg:gap-[30px]
-          "
-        >
-          {/* LEFT CONTACT DETAILS */}
-          <div className="flex flex-col">
+          {/* Left Side - Contact Cards */}
+          <div className="flex flex-col gap-5">
 
-            {/* CONTACT CARDS */}
-            <div className="flex flex-col gap-[14px]">
-              {contactDetails.map(
-                ({ Icon, label, content }, index) => (
-                  <div
-                    key={label}
-                    ref={(element) => {
-                      cardsRef.current[index] = element;
-                    }}
-                    style={{
-                      transitionDelay: `${index * 120}ms`,
-                    }}
-                    className="
-                      group
-                      flex
-                      min-h-[76px]
-                      items-start
-                      gap-[13px]
-                      rounded-[12px]
-                      border
-                      border-[#e2eae6]
-                      bg-[#fff]
-                      px-[18px]
-                      py-[17px]
+            {CONTACT_CARDS.map((card, idx) => {
+              const Icon = card.icon;
 
-                      shadow-[0_4px_14px_rgba(0,0,0,0.04)]
+              return (
+                <div
+                  key={card.id}
+                  ref={(el) => {
+                    cardsRef.current[idx] = el;
+                  }}
+                  style={{
+                    transitionDelay: `${idx * 120}ms`,
+                  }}
+                  className="group flex translate-y-8 gap-5 rounded-2xl border border-primary/10 bg-background-card p-5 opacity-0 shadow-sm transition-all duration-700 hover:-translate-y-1 hover:border-secondary/60 hover:shadow-lg sm:p-6"
+                >
+                  {/* Icon */}
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white sm:h-14 sm:w-14">
+                    <Icon size={23} strokeWidth={1.8} />
+                  </div>
 
-                      opacity-0
-                      translate-y-10
-                      transition-all
-                      duration-700
-                      ease-out
+                  {/* Card Content */}
+                  <div className="min-w-0 flex-1">
+                    <h3 className="mb-3 font-serif text-lg font-bold text-foreground">
+                      {card.label}
+                    </h3>
 
-                      hover:-translate-y-1
-                      hover:border-[#c3a365]
-                      hover:shadow-[0_8px_20px_rgba(0,0,0,0.07)]
-                    "
-                  >
-                    {/* ICON */}
-                    <div
-                      className="
-                        flex
-                        h-[36px]
-                        w-[36px]
-                        shrink-0
-                        items-center
-                        justify-center
-                        rounded-[9px]
-                        bg-[#eaf0ec]
-                        text-[#006b63]
-
-                        transition-all
-                        duration-300
-
-                        group-hover:bg-[#006b63]
-                        group-hover:text-white
-                      "
-                    >
-                      <Icon
-                        size={18}
-                        strokeWidth={1.8}
-                      />
-                    </div>
-
-                    {/* DETAILS */}
-                    <div className="min-w-0 flex-1">
-
-                      <p
-                        className="
-                          mb-1
-                          text-[9px]
-                          font-bold
-                          tracking-[1px]
-                          text-[#c3a365]
-                        "
-                      >
-                        {label}
-                      </p>
-
-                      <div
-                        className="
-                          flex
-                          flex-col
-                          text-[10px]
-                          font-medium
-                          leading-[1.9]
-                          text-[#263c39]
-
-                          [&_a]:break-words
-                          [&_a]:transition-colors
-                          [&_a:hover]:text-[#006b63]
-                        "
-                      >
-                        {content}
-                      </div>
-
+                    <div className="flex flex-col gap-2">
+                      {card.lines.map((line, index) =>
+                        typeof line === "string" ? (
+                          <p
+                            key={index}
+                            className="break-words text-sm leading-6 text-muted"
+                          >
+                            {line}
+                          </p>
+                        ) : (
+                          <a
+                            key={index}
+                            href={line.href}
+                            className="w-fit break-all text-sm text-muted transition-colors duration-200 hover:text-primary hover:underline"
+                          >
+                            {line.text}
+                          </a>
+                        )
+                      )}
                     </div>
                   </div>
-                )
-              )}
-            </div>
+                </div>
+              );
+            })}
 
-            {/* OFFICIAL WEBSITE BUTTON */}
-            <div
-              ref={websiteRef}
-              className="
-                mt-4
-                opacity-0
-                translate-y-10
-                transition-all
-                duration-700
-                ease-out
-              "
-              style={{
-                transitionDelay: "360ms",
-              }}
-            >
-              <a
-                href="https://mvnjsrvrcollege.ac.in"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-full
-                  border
-                  border-[#006b63]
-                  bg-transparent
-                  px-5
-                  py-[9px]
-                  text-[10px]
-                  font-bold
-                  text-[#006b63]
-
-                  transition-all
-                  duration-300
-
-                  hover:bg-[#006b63]
-                  hover:text-white
-                "
-              >
-                <ExternalLink size={12} />
-
-                Visit Official Website
-              </a>
-            </div>
+            {/* Official Website */}
+           
           </div>
 
-          {/* RIGHT MAP SECTION */}
-          <div className="flex min-w-0 flex-col">
+          {/* Right Side - Google Map */}
+          <div
+            ref={mapRef}
+            className="translate-x-8 opacity-0 transition-all duration-700"
+          >
+            <div className="overflow-hidden rounded-2xl border border-primary/10 bg-background-card p-2 shadow-lg sm:p-3">
 
-            {/* GOOGLE MAP */}
-            <div
-              ref={mapRef}
-              className="
-                relative
-                h-[280px]
-                w-full
-                overflow-hidden
-                rounded-[12px]
-                border
-                border-[#dce8e1]
-                bg-[#eaf0ec]
+              {/* Map Header */}
+              <div className="flex items-center gap-3 px-3 py-3 sm:px-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary/20 text-primary">
+                  <MapPin size={21} />
+                </div>
 
-                shadow-[0_6px_20px_rgba(0,0,0,0.07)]
+                <div>
+                  <h3 className="font-serif text-base font-bold text-foreground">
+                    Find Our Campus
+                  </h3>
 
-                opacity-0
-                translate-y-10
-                transition-all
-                duration-700
-                ease-out
+                  <p className="text-xs text-muted">
+                    MVN JS &amp; RVR College of Arts and Science
+                  </p>
+                </div>
+              </div>
 
-                sm:h-[300px]
-                lg:h-[300px]
-              "
-              style={{
-                transitionDelay: "180ms",
-              }}
-            >
-              <iframe
-                title="MVN JS & RVR College Location"
-                src={`https://maps.google.com/maps?q=${encodeURIComponent(
-                  mapLocation
-                )}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                width="100%"
-                height="100%"
-                style={{
-                  border: 0,
-                }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
-              />
-            </div>
-
-            {/* GET DIRECTIONS BUTTON */}
-            <div
-              ref={directionsRef}
-              className="
-                mt-3
-                flex
-                justify-center
-                sm:justify-start
-                lg:justify-start
-
-                opacity-0
-                translate-y-10
-                transition-all
-                duration-700
-                ease-out
-              "
-              style={{
-                transitionDelay: "360ms",
-              }}
-            >
-              <a
-                href={directionsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  group
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-full
-                  bg-[#08776e]
-                  px-6
-                  py-[10px]
-                  text-[11px]
-                  font-bold
-                  text-white
-
-                  shadow-[0_6px_16px_rgba(0,107,99,0.20)]
-
-                  transition-all
-                  duration-300
-
-                  hover:-translate-y-1
-                  hover:bg-[#006b63]
-                  hover:shadow-[0_10px_22px_rgba(0,107,99,0.25)]
-                "
-              >
-                <Navigation
-                  size={14}
-                  strokeWidth={1.8}
-                  className="transition-transform duration-300 group-hover:-translate-y-0.5"
+              {/* Map */}
+              <div className="relative h-[320px] overflow-hidden rounded-xl sm:h-[400px] lg:h-[440px]">
+                <iframe
+                  title="MVN JS & RVR College Location"
+                  src={MAP_EMBED_SRC}
+                  width="100%"
+                  height="100%"
+                  className="absolute inset-0 border-0"
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
                 />
-
-                Get Directions
-
-                <span className="sr-only">
-                  to MVN JS & RVR College
-                </span>
-              </a>
+              </div>
             </div>
 
+            {/* Get Directions */}
+            <a
+              href={DIRECTIONS_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group mt-5 flex min-h-14 w-full items-center justify-center gap-3 rounded-xl border border-primary bg-background-card px-6 py-4 text-sm font-semibold text-primary shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-primary hover:text-white hover:shadow-lg"
+            >
+              <Navigation
+                size={18}
+                strokeWidth={2.2}
+                className="transition-transform duration-300 group-hover:-translate-y-1"
+              />
+
+              Get Directions
+
+              <ExternalLink size={14} />
+            </a>
           </div>
         </div>
-
-      </Container>
+      </div>
     </section>
   );
 }

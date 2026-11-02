@@ -8,41 +8,42 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import Text from "@/components/ui/Text";
-import Container from "@/components/ui/Container";
-
-const achievements = [
+const items = [
   {
     Icon: ShieldCheck,
-    badge: "NAAC – B Grade",
-    title: "Accredited by NAAC",
-    description:
+    label: "NAAC Accreditation",
+    headline: "Accredited by NAAC",
+    detail:
       "The college was accredited by the National Assessment and Accreditation Council (NAAC) with a B grade and a score of 2.78 in 2016.",
+    badge: "NAAC – B Grade",
   },
   {
     Icon: BookMarked,
-    badge: "UGC Recognised",
-    title: "UGC Recognised Institution",
-    description:
+    label: "UGC Recognition",
+    headline: "UGC Recognised Institution",
+    detail:
       "MVN JS & RVR College of Arts & Science operates as a UGC-recognised institution affiliated to Dr. B.R. Ambedkar Open University, offering approved undergraduate and postgraduate programmes.",
+    badge: "UGC Recognised",
   },
   {
     Icon: Star,
+    label: "Centre of Excellence",
+    headline: "Centre of Excellence",
+    detail:
+      "The institution has been recognised as a Centre of Excellence in higher education, committed to providing quality, value-based education to rural students at an affordable fee structure.",
     badge: "Recognised — Higher Education",
-    title: "Centre of Excellence",
-    description:
-      "The institution has been recognised as a Centre of Excellence in higher education, committed to providing quality-based education to rural students at an affordable fee structure.",
   },
   {
     Icon: TrendingUp,
-    badge: "Est. 1972",
-    title: "Five Decades of Service",
-    description:
+    label: "Academic Milestones",
+    headline: "Five Decades of Service",
+    detail:
       "Established in 1972, the college has served the Konaseema region for over five decades. It participates in the Unnat Bharat Abhiyan and the Andhra Pradesh State Skill Development Corporation initiatives.",
+    badge: "Est. 1972",
   },
 ];
 
-export default function AchievementsSection() {
+export default function Achievements() {
   const headingRef = useRef(null);
   const cardsRef = useRef([]);
 
@@ -50,280 +51,155 @@ export default function AchievementsSection() {
     const heading = headingRef.current;
     const cards = cardsRef.current.filter(Boolean);
 
-    const elements = [heading, ...cards].filter(Boolean);
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove(
-              "opacity-0",
-              "translate-y-10"
-            );
-
-            entry.target.classList.add(
-              "opacity-100",
-              "translate-y-0"
-            );
-          } else {
-            entry.target.classList.remove(
-              "opacity-100",
-              "translate-y-0"
-            );
-
-            entry.target.classList.add(
-              "opacity-0",
-              "translate-y-10"
-            );
-          }
-        });
+    const headingObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (heading) {
+          heading.classList.toggle("opacity-100", entry.isIntersecting);
+          heading.classList.toggle("translate-y-0", entry.isIntersecting);
+          heading.classList.toggle("opacity-0", !entry.isIntersecting);
+          heading.classList.toggle("translate-y-8", !entry.isIntersecting);
+        }
       },
-      {
-        threshold: 0.15,
-      }
+      { threshold: 0.2 }
     );
 
-    elements.forEach((element) => observer.observe(element));
+    const cardsObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle(
+            "opacity-100",
+            entry.isIntersecting
+          );
+          entry.target.classList.toggle(
+            "translate-y-0",
+            entry.isIntersecting
+          );
+          entry.target.classList.toggle(
+            "opacity-0",
+            !entry.isIntersecting
+          );
+          entry.target.classList.toggle(
+            "translate-y-10",
+            !entry.isIntersecting
+          );
+        });
+      },
+      { threshold: 0.12 }
+    );
 
-    return () => observer.disconnect();
+    if (heading) headingObserver.observe(heading);
+
+    cards.forEach((card) => {
+      cardsObserver.observe(card);
+    });
+
+    return () => {
+      headingObserver.disconnect();
+      cardsObserver.disconnect();
+    };
   }, []);
 
   return (
     <section
       id="achievements"
-      className="
-        w-full
-        bg-background-secondary
-        py-14
-        sm:py-16
-        lg:py-[68px]
-      "
+      className="relative overflow-hidden  bg-background-secondary py-20 sm:py-24 lg:py-28"
     >
-      <Container size="wide">
+      {/* Background Decorations */}
+      <div className="pointer-events-none absolute -left-32 top-16 h-72 w-72 rounded-full bg-[#c3a365]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 bottom-10 h-80 w-80 rounded-full bg-[#075e59]/5 blur-3xl" />
 
-        {/* SECTION HEADING */}
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+
+        {/* Section Heading */}
         <div
           ref={headingRef}
-          className="
-            mx-auto
-            mb-9
-            flex
-            max-w-[600px]
-            flex-col
-            items-center
-            text-center
-
-            opacity-0 translate-y-10
-            transition-all duration-700 ease-out
-
-            sm:mb-10
-            lg:mb-10
-          "
+          className="mx-auto mb-14 max-w-3xl translate-y-8 text-center opacity-0 transition-all duration-1000 ease-out sm:mb-16"
         >
-          <Text
-            variant="eyebrow"
-            color="goldMuted"
-            className="
-              mb-2
-              text-[10px]
-              font-bold
-              tracking-[2px]
-              sm:text-[11px]
-            "
-          >
-            RECOGNITION & MILESTONES
-          </Text>
+          <span className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.25em] text-[#92723a] sm:text-sm">
+            <span className="h-px w-7 bg-[#c3a365]" />
+            RECOGNITION &amp; MILESTONES
+            <span className="h-px w-7 bg-[#c3a365]" />
+          </span>
 
-          <Text
-            as="h2"
-            variant="h2"
-            color="primary"
-            className="
-              text-[26px]
-              font-bold
-              leading-tight
-              sm:text-[29px]
-              md:text-[32px]
-            "
-          >
-            Achievements & Accreditations
-          </Text>
+          <h2 className="mt-5 font-serif text-3xl font-bold leading-tight text-[#064b47] sm:text-4xl lg:text-5xl">
+            Achievements &amp; Accreditations
+          </h2>
 
-          <Text
-            variant="small"
-            color="body"
-            align="center"
-            className="
-              mt-3
-              text-[12px]
-              leading-relaxed
-              sm:text-[13px]
-            "
-          >
-            Recognising our journey of academic excellence.
-          </Text>
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#647473] sm:text-base sm:leading-8">
+            Recognising our journey of academic excellence and our
+            commitment to quality education, institutional growth and
+            student development.
+          </p>
 
-          {/* GOLD DIVIDER */}
-          <span className="mt-4 h-[2px] w-12 bg-[#c3a365]" />
+          <div className="mx-auto mt-7 flex items-center justify-center gap-2">
+            <span className="h-[2px] w-10 bg-[#c3a365]" />
+            <span className="h-2 w-2 rotate-45 bg-[#c3a365]" />
+            <span className="h-[2px] w-10 bg-[#c3a365]" />
+          </div>
         </div>
 
-        {/* ACHIEVEMENTS GRID */}
-        <div
-          className="
-            mx-auto
-            grid
-            max-w-[960px]
-            grid-cols-1
-            gap-4
-            sm:grid-cols-2
-            lg:grid-cols-4
-            lg:gap-[18px]
-          "
-        >
-          {achievements.map(
-            ({ Icon, badge, title, description }, index) => (
-              <div
-                key={title}
-                ref={(element) => {
-                  cardsRef.current[index] = element;
+        {/* Achievement Cards */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
+          {items.map(
+            ({ Icon, label, headline, detail, badge }, index) => (
+              <article
+                key={label}
+                ref={(el) => {
+                  cardsRef.current[index] = el;
                 }}
                 style={{
-                  transitionDelay: `${index * 120}ms`,
+                  transitionDelay: `${index * 130}ms`,
                 }}
-                className="
-                  group
-                  relative
-                  flex
-                  min-h-[250px]
-                  min-w-0
-                  flex-col
-                  items-center
-                  overflow-hidden
-                  rounded-[13px]
-                  border
-                  border-[#eadcc2]
-                  bg-[#fffdf9]
-                  px-4
-                  py-6
-                  text-center
-
-                  shadow-[0_4px_15px_rgba(0,0,0,0.045)]
-
-                  opacity-0 translate-y-10
-                  transition-all duration-700 ease-out
-
-                  hover:-translate-y-1
-                  hover:border-[#c3a365]
-                  hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)]
-
-                  sm:min-h-[270px]
-                  lg:min-h-[292px]
-                  lg:px-3
-                  xl:px-4
-                "
+                className="group relative translate-y-10 overflow-hidden rounded-2xl border border-[#e8e2d4] bg-white p-7 opacity-0 shadow-[0_5px_25px_rgba(6,75,71,0.05)] transition-all duration-700 ease-out hover:-translate-y-2 hover:border-[#c3a365]/60 hover:shadow-[0_18px_40px_rgba(6,75,71,0.12)] sm:p-8"
               >
-                {/* TOP GOLD BORDER */}
-                <span
-                  className="
-                    absolute
-                    left-4
-                    right-4
-                    top-0
-                    h-[3px]
-                    rounded-b-full
-                    bg-[#c3a365]
-                    transition-all duration-300
-                    group-hover:left-0
-                    group-hover:right-0
-                  "
-                />
+                {/* Top Gold Accent */}
+                <div className="absolute left-0 top-0 h-1 w-0 bg-[#c3a365] transition-all duration-500 group-hover:w-full" />
 
-                {/* ICON */}
-                <div
-                  className="
-                    flex
-                    h-[52px]
-                    w-[52px]
-                    shrink-0
-                    items-center
-                    justify-center
-                    rounded-full
-                    border
-                    border-[#b9d3cf]
-                    bg-[#eaf0ec]
-                    text-[#006b63]
-                    transition-all duration-300
+                {/* Decorative Circle */}
+                <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#075e59]/[0.03] transition-transform duration-700 group-hover:scale-150" />
 
-                    group-hover:bg-[#006b63]
-                    group-hover:text-white
-                    group-hover:border-[#006b63]
-                  "
-                >
-                  <Icon size={25} strokeWidth={1.7} />
+                {/* Icon */}
+                <div className="relative mb-6 flex h-[70px] w-[70px] items-center justify-center rounded-2xl bg-[#075e59]/[0.07] text-[#075e59] transition-all duration-500 group-hover:bg-[#075e59] group-hover:text-white group-hover:shadow-lg group-hover:shadow-[#075e59]/20">
+                  <Icon
+                    size={34}
+                    strokeWidth={1.5}
+                    className="transition-transform duration-500 group-hover:scale-110"
+                  />
                 </div>
 
-                {/* BADGE */}
-                <span
-                  className="
-                    mt-3
-                    inline-flex
-                    items-center
-                    justify-center
-                    rounded-full
-                    border
-                    border-[#e5d0a9]
-                    bg-[#f8f1e4]
-                    px-3
-                    py-[3px]
-                    text-[9px]
-                    font-semibold
-                    leading-none
-                    tracking-[0.2px]
-                    text-[#8a682e]
-                    sm:text-[9px]
-                  "
-                >
-                  {badge}
+                {/* Label */}
+                <span className="text-xs font-bold uppercase tracking-[0.12em] text-[#92723a]">
+                  {label}
                 </span>
 
-                {/* ACHIEVEMENT TITLE */}
-                <Text
-                  as="h3"
-                  variant="h3"
-                  color="primary"
-                  className="
-                    mt-2
-                    text-[14px]
-                    font-bold
-                    leading-[1.3]
-                    sm:text-[14px]
-                  "
-                >
-                  {title}
-                </Text>
+                {/* Headline */}
+                <h3 className="mt-3 min-h-[60px] font-serif text-xl font-bold leading-snug text-primary transition-colors duration-300 group-hover:text-[#92723a]">
+                  {headline}
+                </h3>
 
-                {/* DESCRIPTION */}
-                <Text
-                  variant="small"
-                  color="body"
-                  align="center"
-                  className="
-                    mt-3
-                    max-w-[210px]
-                    text-[10px]
-                    leading-[1.8]
-                    sm:text-[10px]
-                    lg:text-[10px]
-                  "
-                >
-                  {description}
-                </Text>
-              </div>
+                {/* Divider */}
+                <div className="my-5 flex items-center gap-2">
+                  <span className="h-[2px] w-9 bg-[#c3a365] transition-all duration-500 group-hover:w-14" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#c3a365]" />
+                </div>
+
+                {/* Description */}
+                <p className="text-sm leading-7 text-[#647473]">
+                  {detail}
+                </p>
+
+                {/* Badge */}
+                <div className="mt-7">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-[#c3a365]/30 bg-[#c3a365]/10 px-3.5 py-2 text-xs font-bold text-[#80632f]">
+                    <ShieldCheck size={14} />
+                    {badge}
+                  </span>
+                </div>
+              </article>
             )
           )}
         </div>
-
-      </Container>
+      </div>
     </section>
   );
 }

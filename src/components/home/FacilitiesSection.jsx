@@ -8,47 +8,39 @@ import {
   Monitor,
   Bus,
   Wifi,
+  ArrowRight,
 } from "lucide-react";
-
-import Text from "@/components/ui/Text";
-import Container from "@/components/ui/Container";
 
 const facilities = [
   {
     Icon: BookOpen,
     title: "Library",
-    description:
-      "A well-stocked library offering a wide collection of textbooks, reference materials and periodicals to support students across all programmes.",
+    desc: "A well-stocked library offering a wide collection of textbooks, reference materials and periodicals to support students across all programmes.",
   },
   {
     Icon: FlaskConical,
     title: "Science Laboratories",
-    description:
-      "Dedicated laboratories for Physics, Chemistry, Botany and Zoology, providing students with hands-on practical learning experiences.",
+    desc: "Dedicated laboratories for Physics, Chemistry, Botany and Zoology, providing students with hands-on practical learning experiences.",
   },
   {
     Icon: School,
     title: "Classrooms",
-    description:
-      "Spacious and well-ventilated classrooms that provide a comfortable and focused environment for effective teaching and learning.",
+    desc: "Spacious and well-ventilated classrooms that provide a comfortable and focused environment for effective teaching and learning.",
   },
   {
     Icon: Monitor,
     title: "Computer Labs",
-    description:
-      "Equipped computer laboratories giving students access to essential computing tools and software for academic and practical coursework.",
+    desc: "Equipped computer laboratories giving students access to essential computing tools and software for academic and practical coursework.",
   },
   {
     Icon: Bus,
     title: "Transportation",
-    description:
-      "College transportation facilities that help students commute safely and conveniently from surrounding areas to the campus.",
+    desc: "College transportation facilities that help students commute safely and conveniently from surrounding areas to the campus.",
   },
   {
     Icon: Wifi,
     title: "Digital Learning",
-    description:
-      "Support for digital and technology-aided learning, helping students engage with modern educational resources and methods.",
+    desc: "Support for digital and technology-aided learning, helping students engage with modern educational resources and methods.",
   },
 ];
 
@@ -60,9 +52,24 @@ export default function FacilitiesSection() {
     const heading = headingRef.current;
     const cards = cardsRef.current.filter(Boolean);
 
-    const elements = [heading, ...cards].filter(Boolean);
+    const observerOptions = {
+      threshold: 0.12,
+    };
 
-    const observer = new IntersectionObserver(
+    const headingObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          heading.classList.remove("opacity-0", "translate-y-8");
+          heading.classList.add("opacity-100", "translate-y-0");
+        } else {
+          heading.classList.add("opacity-0", "translate-y-8");
+          heading.classList.remove("opacity-100", "translate-y-0");
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    const cardsObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -70,231 +77,133 @@ export default function FacilitiesSection() {
               "opacity-0",
               "translate-y-10"
             );
-
             entry.target.classList.add(
               "opacity-100",
               "translate-y-0"
             );
           } else {
-            entry.target.classList.remove(
-              "opacity-100",
-              "translate-y-0"
-            );
-
             entry.target.classList.add(
               "opacity-0",
               "translate-y-10"
             );
+            entry.target.classList.remove(
+              "opacity-100",
+              "translate-y-0"
+            );
           }
         });
       },
-      {
-        threshold: 0.15,
-      }
+      observerOptions
     );
 
-    elements.forEach((element) => observer.observe(element));
+    if (heading) headingObserver.observe(heading);
 
-    return () => observer.disconnect();
+    cards.forEach((card) => {
+      cardsObserver.observe(card);
+    });
+
+    return () => {
+      headingObserver.disconnect();
+      cardsObserver.disconnect();
+    };
   }, []);
 
   return (
     <section
       id="campus-facilities"
-      className="
-        w-full
-        bg-background-secondary
-        py-14 sm:py-16 lg:py-[68px]
-      "
+      className="relative overflow-hidden bg-background-secondary py-20 sm:py-24 lg:py-28"
     >
-      <Container size="wide">
+      {/* Background Decorations */}
+      <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-[#c3a365]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 bottom-10 h-80 w-80 rounded-full bg-[#075e59]/5 blur-3xl" />
 
-        {/* SECTION HEADING */}
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+
+        {/* Section Heading */}
         <div
           ref={headingRef}
-          className="
-            mx-auto
-            mb-9
-            flex
-            max-w-[600px]
-            flex-col
-            items-center
-            text-center
-
-            opacity-0 translate-y-10
-            transition-all duration-700 ease-out
-
-            sm:mb-10
-            lg:mb-10
-          "
+          className="mx-auto mb-14 max-w-3xl translate-y-8 text-center opacity-0 transition-all duration-1000 ease-out sm:mb-16"
         >
-          <Text
-            variant="eyebrow"
-            color="goldMuted"
-            className="
-              mb-2
-              text-[10px]
-              font-bold
-              tracking-[2px]
-              sm:text-[11px]
-            "
-          >
+          <span className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.25em] text-[#92723a] sm:text-sm">
+            <span className="h-px w-7 bg-[#c3a365]" />
             INFRASTRUCTURE
-          </Text>
+            <span className="h-px w-7 bg-[#c3a365]" />
+          </span>
 
-          <Text
-            as="h2"
-            variant="h2"
-            color="primary"
-            className="
-              text-[26px]
-              font-bold
-              leading-tight
-              sm:text-[29px]
-              md:text-[32px]
-            "
-          >
+          <h2 className="mt-5 font-serif text-3xl font-bold leading-tight text-[#064b47] sm:text-4xl lg:text-5xl">
             Campus Facilities
-          </Text>
+          </h2>
 
-          <Text
-            variant="small"
-            color="body"
-            align="center"
-            className="
-              mt-3
-              text-[12px]
-              leading-relaxed
-              sm:text-[13px]
-            "
-          >
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#647473] sm:text-base sm:leading-8">
             A supportive environment for learning, growth and development.
-          </Text>
+            Our campus provides the essential facilities to help students
+            achieve academic excellence and build their future.
+          </p>
 
-          {/* GOLD DIVIDER */}
-          <span className="mt-4 h-[2px] w-12 bg-[#c3a365]" />
+          <div className="mx-auto mt-7 flex items-center justify-center gap-2">
+            <span className="h-[2px] w-10 bg-[#c3a365]" />
+            <span className="h-2 w-2 rotate-45 bg-[#c3a365]" />
+            <span className="h-[2px] w-10 bg-[#c3a365]" />
+          </div>
         </div>
 
-        {/* FACILITIES GRID */}
-        <div
-          className="
-            mx-auto
-            grid
-            max-w-[1000px]
-            grid-cols-1
-            gap-4
-            sm:grid-cols-2
-            lg:grid-cols-3
-            lg:gap-[18px]
-          "
-        >
-          {facilities.map(({ Icon, title, description }, index) => (
+        {/* Facilities Grid */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
+          {facilities.map(({ Icon, title, desc }, index) => (
             <div
               key={title}
-              ref={(element) => {
-                cardsRef.current[index] = element;
+              ref={(el) => {
+                cardsRef.current[index] = el;
               }}
               style={{
-                transitionDelay: `${index * 120}ms`,
+                transitionDelay: `${index * 100}ms`,
               }}
-              className="
-                group
-                flex
-                min-h-[210px]
-                min-w-0
-                flex-col
-                items-center
-                rounded-[13px]
-                border
-                border-[#eadcc2]
-                bg-[#fffdf9]
-                px-5
-                py-6
-                text-center
-
-                shadow-[0_4px_15px_rgba(0,0,0,0.045)]
-
-                opacity-0 translate-y-10
-                transition-all duration-700 ease-out
-
-                hover:-translate-y-1
-                hover:border-[#c3a365]
-                hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)]
-
-                sm:min-h-[210px]
-                lg:px-4
-                xl:px-5
-              "
+              className="group relative translate-y-10 overflow-hidden rounded-2xl border border-[#e8e2d4] bg-white p-7 opacity-0 shadow-[0_5px_25px_rgba(6,75,71,0.04)] transition-all duration-700 ease-out hover:-translate-y-2 hover:border-[#c3a365]/60 hover:shadow-[0_18px_40px_rgba(6,75,71,0.10)] sm:p-8"
             >
-              {/* ICON */}
-              <div
-                className="
-                  flex
-                  h-[52px]
-                  w-[52px]
-                  shrink-0
-                  items-center
-                  justify-center
-                  rounded-full
-                  bg-[#eaf0ec]
-                  text-[#006b63]
-                  transition-all duration-300
+              {/* Top Accent */}
+              <div className="absolute left-0 top-0 h-1 w-0 bg-[#c3a365] transition-all duration-500 group-hover:w-full" />
 
-                  group-hover:bg-[#006b63]
-                  group-hover:text-white
-                "
-              >
-                <Icon size={25} strokeWidth={1.7} />
+              {/* Decorative Circle */}
+              <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#075e59]/[0.03] transition-transform duration-700 group-hover:scale-150" />
+
+              {/* Icon */}
+              <div className="relative mb-7 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#075e59]/[0.07] text-[#075e59] transition-all duration-500 group-hover:bg-[#075e59] group-hover:text-white group-hover:shadow-lg group-hover:shadow-[#075e59]/20">
+                <Icon
+                  size={30}
+                  strokeWidth={1.6}
+                  className="transition-transform duration-500 group-hover:scale-110"
+                />
               </div>
 
-              {/* FACILITY TITLE */}
-              <Text
-                as="h3"
-                variant="h3"
-                color="primary"
-                className="
-                  mt-4
-                  text-[15px]
-                  font-bold
-                  leading-tight
-                  sm:text-[15px]
-                "
-              >
+              {/* Title */}
+              <h3 className="relative font-serif text-xl font-bold text-[#064b47] transition-colors duration-300 group-hover:text-[#92723a] sm:text-2xl">
                 {title}
-              </Text>
+              </h3>
 
-              {/* SMALL DIVIDER */}
-              <span
-                className="
-                  mt-2
-                  h-[1.5px]
-                  w-7
-                  bg-[#c3a365]
-                  transition-all duration-300
-                  group-hover:w-12
-                "
-              />
+              {/* Gold Divider */}
+              <div className="my-5 flex items-center gap-2">
+                <span className="h-[2px] w-10 bg-[#c3a365] transition-all duration-500 group-hover:w-16" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#c3a365]" />
+              </div>
 
-              {/* DESCRIPTION */}
-              <Text
-                variant="small"
-                color="body"
-                align="center"
-                className="
-                  mt-3
-                  max-w-[290px]
-                  text-[11px]
-                  leading-[1.7]
-                  sm:text-[11px]
-                "
-              >
-                {description}
-              </Text>
+              {/* Description */}
+              <p className="text-sm leading-7 text-[#647473] sm:text-[15px]">
+                {desc}
+              </p>
+
+              {/* Bottom Decoration */}
+              <div className="mt-7 flex items-center justify-end">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full border border-[#e8e2d4] text-[#92723a] transition-all duration-300 group-hover:border-[#075e59] group-hover:bg-[#075e59] group-hover:text-white">
+                  <ArrowRight size={15} />
+                </div>
+              </div>
             </div>
           ))}
         </div>
 
-      </Container>
+      
+
+      </div>
     </section>
   );
 }

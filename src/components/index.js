@@ -15,3 +15,5 @@ export {default as LifeAtMVN} from './home/LifeAtMVN';
 export {default as AchievementsSection} from './home/AchievementsSection';
 export {default as AlumniSection} from './home/AlumniSection'
 export {default as ContactSection} from './home/ContactSection'
+export {default as OrgChart} from './home/OrgChart'
+export {default as NewsEvents} from './home/NewsEvents'

@@ -1,39 +1,38 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   GraduationCap,
   Building2,
   Users,
   Heart,
+  ArrowUpRight,
 } from "lucide-react";
 
-import { Text, Container } from "@/components";
-
-const strengths = [
+const features = [
   {
     Icon: GraduationCap,
+    number: "01",
     title: "Academic Excellence",
-    description:
-      "Quality education across Arts, Science and Commerce, supported by experienced and dedicated faculty.",
+    desc: "Quality education across Arts, Science and Commerce, supported by experienced and dedicated faculty.",
   },
   {
     Icon: Building2,
+    number: "02",
     title: "Established Legacy",
-    description:
-      "Established in 1972, with a long-standing commitment to higher education in the Konaseema region.",
+    desc: "Established in 1972, with a long-standing commitment to higher education in the Konaseema region.",
   },
   {
     Icon: Users,
+    number: "03",
     title: "Student Development",
-    description:
-      "Opportunities for academic learning, extracurricular activities, sports and overall personal development.",
+    desc: "Opportunities for academic learning, extracurricular activities, sports and overall personal development.",
   },
   {
     Icon: Heart,
+    number: "04",
     title: "Supportive Campus",
-    description:
-      "A welcoming and inclusive learning environment that encourages every student to grow and succeed.",
+    desc: "A welcoming and inclusive learning environment that encourages every student to grow and succeed.",
   },
 ];
 
@@ -41,63 +40,45 @@ export default function WhyChooseSection() {
   const headingRef = useRef(null);
   const cardsRef = useRef([]);
 
+  const [headingVisible, setHeadingVisible] = useState(false);
+  const [visibleCards, setVisibleCards] = useState([]);
+
   useEffect(() => {
     const heading = headingRef.current;
-    const cards = cardsRef.current.filter(Boolean);
 
-    if (!heading) return;
-
-    // HEADING OBSERVER
     const headingObserver = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          heading.classList.remove("opacity-0", "translate-y-8");
-          heading.classList.add("opacity-100", "translate-y-0");
-        } else {
-          heading.classList.remove("opacity-100", "translate-y-0");
-          heading.classList.add("opacity-0", "translate-y-8");
-        }
+        setHeadingVisible(entry.isIntersecting);
       },
-      {
-        threshold: 0.2,
-      }
+      { threshold: 0.2 }
     );
 
-    headingObserver.observe(heading);
+    if (heading) {
+      headingObserver.observe(heading);
+    }
 
-    // CARDS OBSERVER
     const cardObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove(
-              "opacity-0",
-              "translate-y-10"
-            );
+          const index = Number(entry.target.dataset.index);
 
-            entry.target.classList.add(
-              "opacity-100",
-              "translate-y-0"
-            );
-          } else {
-            entry.target.classList.remove(
-              "opacity-100",
-              "translate-y-0"
-            );
+          setVisibleCards((previous) => {
+            if (entry.isIntersecting) {
+              return previous.includes(index)
+                ? previous
+                : [...previous, index];
+            }
 
-            entry.target.classList.add(
-              "opacity-0",
-              "translate-y-10"
-            );
-          }
+            return previous.filter((item) => item !== index);
+          });
         });
       },
-      {
-        threshold: 0.15,
-      }
+      { threshold: 0.15 }
     );
 
-    cards.forEach((card) => cardObserver.observe(card));
+    cardsRef.current.forEach((card) => {
+      if (card) cardObserver.observe(card);
+    });
 
     return () => {
       headingObserver.disconnect();
@@ -107,149 +88,123 @@ export default function WhyChooseSection() {
 
   return (
     <section
-      className="w-full bg-background-secondary py-12 sm:py-14 lg:py-16 xl:py-[72px]"
       id="why-choose-mvn"
+      className="relative overflow-hidden bg-background-secondary py-16 sm:py-20 lg:py-24"
     >
-      <Container size="wide">
+      {/* Decorative Background */}
+      <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-secondary/5 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
 
-        {/* SECTION HEADING */}
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+
+        {/* --------------------------------
+            Section Heading
+        -------------------------------- */}
+
         <div
           ref={headingRef}
-          className="
-            mb-9
-            flex flex-col items-center text-center
-            opacity-0 translate-y-8
-            transition-all duration-700 ease-out
-            sm:mb-10 lg:mb-9
-          "
+          className={`mx-auto mb-12 max-w-3xl text-center transition-all duration-1000 ease-out sm:mb-16 ${
+            headingVisible
+              ? "translate-y-0 opacity-100"
+              : "translate-y-8 opacity-0"
+          }`}
         >
-          <Text
-            variant="eyebrow"
-            color="goldMuted"
-            className="
-              mb-3 text-[10px]
-              tracking-[2px]
-              sm:text-[11px]
-            "
-          >
-            OUR STRENGTHS
-          </Text>
+          {/* Eyebrow */}
+          <div className="mb-5 flex items-center justify-center gap-3">
+            <span className="h-px w-9 bg-secondary" />
 
-          <Text
-            as="h2"
-            variant="h2"
-            color="primary"
-            className="
-              text-[25px]
-              font-bold
-              leading-tight
-              sm:text-[30px]
-              md:text-[32px]
-              lg:text-[34px]
-            "
-          >
-            Why Choose MVN JS & RVR College?
-          </Text>
+            <span className="font-sans text-xs font-semibold uppercase tracking-[0.25em] text-gold-muted">
+              Our Strengths
+            </span>
 
-          <span className="mt-4 h-[2px] w-12 bg-[#17106d] sm:mt-5" />
+            <span className="h-px w-9 bg-secondary" />
+          </div>
+
+          {/* Title */}
+          <h2 className="font-serif text-3xl font-semibold leading-tight text-primary sm:text-4xl lg:text-[42px]">
+            Why Choose MVN JS &amp; RVR College?
+          </h2>
+
+          {/* Divider */}
+          <div className="mx-auto mt-6 h-[3px] w-16 rounded-full bg-secondary" />
+
+          {/* Description */}
+          <p className="mx-auto mt-6 max-w-2xl font-sans text-sm leading-7 text-muted sm:text-base">
+            Building a strong foundation for academic excellence, personal
+            growth and a brighter future through quality education and
+            meaningful opportunities.
+          </p>
         </div>
 
-        {/* STRENGTH CARDS */}
-        <div
-          className="
-            grid grid-cols-1
-            gap-4
-            sm:grid-cols-2
-            lg:grid-cols-4
-            lg:gap-[18px]
-          "
-        >
-          {strengths.map(({ Icon, title, description }, index) => (
-            <div
-              key={title}
-              ref={(el) => {
-                cardsRef.current[index] = el;
-              }}
-              className="
-                group
-                flex min-w-0 min-h-[205px]
-                flex-col items-center
-                rounded-[12px]
-                border border-[#e9d9bb]
-                bg-[#fffdf9]
-                px-5 py-6
-                text-center
-                shadow-[0_4px_14px_rgba(0,0,0,0.04)]
+        {/* --------------------------------
+            Features Grid
+        -------------------------------- */}
 
-                opacity-0 translate-y-10
-                transition-all duration-700 ease-out
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 
-                hover:-translate-y-1
-                hover:border-[#c3a365]
-                hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)]
+          {features.map(({ Icon, number, title, desc }, index) => {
+            const isVisible = visibleCards.includes(index);
 
-                sm:min-h-[210px]
-                lg:px-4
-                xl:px-5
-              "
-              style={{
-                transitionDelay: `${index * 120}ms`,
-              }}
-            >
-              {/* ICON */}
-              <div
-                className="
-                  flex h-[54px] w-[54px]
-                  shrink-0 items-center justify-center
-                  rounded-full bg-[#edf1ed]
-                  text-[#006b63]
-                  transition-all duration-300
-                  group-hover:bg-[#006b63]
-                  group-hover:text-white
-                "
+            return (
+              <article
+                key={title}
+                ref={(el) => {
+                  cardsRef.current[index] = el;
+                }}
+                data-index={index}
+                className={`group relative flex min-h-[300px] flex-col overflow-hidden rounded-sm border border-secondary/20 bg-background-card p-7 shadow-sm transition-all duration-700 ease-out hover:-translate-y-2 hover:border-secondary/60 hover:shadow-xl sm:p-8 ${
+                  isVisible
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-10 opacity-0"
+                }`}
+                style={{
+                  transitionDelay: `${index * 120}ms`,
+                }}
               >
-                <Icon size={27} strokeWidth={1.7} />
-              </div>
+                {/* Number */}
+                <span className="absolute right-6 top-5 font-serif text-4xl font-bold text-primary/5 transition-colors duration-500 group-hover:text-secondary/20">
+                  {number}
+                </span>
 
-              {/* TITLE */}
-              <Text
-                as="h3"
-                variant="h3"
-                color="primary"
-                className="
-                  mt-4
-                  text-[16px]
-                  font-bold
-                  leading-snug
-                  sm:text-[16px]
-                  lg:text-[15px]
-                  xl:text-[16px]
-                "
-              >
-                {title}
-              </Text>
+                {/* Icon */}
+                <div className="relative mb-7 flex h-[68px] w-[68px] items-center justify-center rounded-sm border border-secondary/30 bg-background-secondary text-primary transition-all duration-500 group-hover:border-primary group-hover:bg-primary group-hover:text-white">
+                  <Icon
+                    size={34}
+                    strokeWidth={1.5}
+                    className="transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
 
-              {/* DESCRIPTION */}
-              <Text
-                variant="small"
-                color="body"
-                className="
-                  mt-3
-                  max-w-[260px]
-                  text-[12px]
-                  leading-[1.65]
-                  sm:text-[12px]
-                  lg:text-[11px]
-                  xl:text-[12px]
-                "
-              >
-                {description}
-              </Text>
-            </div>
-          ))}
+                {/* Content */}
+                <div className="relative flex flex-1 flex-col">
+                  <h3 className="font-serif text-xl font-semibold leading-snug text-primary transition-colors duration-300 group-hover:text-gold-muted">
+                    {title}
+                  </h3>
+
+                  <p className="mt-4 font-sans text-sm leading-7 text-muted">
+                    {desc}
+                  </p>
+
+                  {/* Bottom Accent */}
+                  <div className="mt-auto flex items-center justify-between pt-7">
+                    <span className="h-[2px] w-10 bg-secondary transition-all duration-500 group-hover:w-16" />
+
+                    <ArrowUpRight
+                      size={19}
+                      strokeWidth={1.5}
+                      className="text-gold-muted opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100"
+                    />
+                  </div>
+                </div>
+
+                {/* Bottom Hover Border */}
+                <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-primary transition-all duration-500 group-hover:w-full" />
+              </article>
+            );
+          })}
+
         </div>
-
-      </Container>
+      </div>
     </section>
   );
 }

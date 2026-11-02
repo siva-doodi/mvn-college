@@ -1,329 +1,238 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   BookOpen,
   FlaskConical,
-  ChartNoAxesColumn,
+  BarChart3,
   Monitor,
   ArrowRight,
 } from "lucide-react";
-
-import Text from "@/components/ui/Text";
-import Container from "@/components/ui/Container";
 
 const courses = [
   {
     Icon: BookOpen,
     code: "B.A.",
     title: "Bachelor of Arts",
-    description:
-      "A broad-based programme in the humanities and social sciences, developing critical thinking, communication and analytical skills across a range of disciplines.",
+    desc: "A broad-based programme in the humanities and social sciences, developing critical thinking, communication and analytical skills across a range of disciplines.",
   },
   {
     Icon: FlaskConical,
     code: "B.Sc.",
     title: "Bachelor of Science",
-    description:
-      "A rigorous science programme fostering logical reasoning and scientific inquiry through core subjects in Mathematics, Physics, Chemistry, Botany and Zoology.",
+    desc: "A rigorous science programme fostering logical reasoning and scientific inquiry through core subjects in Mathematics, Physics, Chemistry, Botany and Zoology.",
   },
   {
-    Icon: ChartNoAxesColumn,
+    Icon: BarChart3,
     code: "B.Com.",
     title: "Bachelor of Commerce",
-    description:
-      "Prepares students for careers in business, finance and accounting with a strong foundation in commerce principles, including General and Computer Applications streams.",
+    desc: "Prepares students for careers in business, finance and accounting with a strong foundation in commerce principles, including General and Computer Applications streams.",
   },
   {
     Icon: Monitor,
     code: "BCA",
     title: "Bachelor of Computer Applications",
-    description:
-      "An applied computing programme equipping students with essential knowledge in programming, software development and information technology for a digital career.",
+    desc: "An applied computing programme equipping students with essential knowledge in programming, software development and information technology for a digital career.",
   },
 ];
 
 export default function CoursesSection() {
   const headingRef = useRef(null);
   const cardsRef = useRef([]);
-  const buttonRef = useRef(null);
+
+  const [headingVisible, setHeadingVisible] = useState(false);
+  const [visibleCards, setVisibleCards] = useState([]);
 
   useEffect(() => {
     const heading = headingRef.current;
-    const cards = cardsRef.current.filter(Boolean);
-    const button = buttonRef.current;
 
-    const elements = [heading, ...cards, button].filter(Boolean);
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove(
-              "opacity-0",
-              "translate-y-10"
-            );
-
-            entry.target.classList.add(
-              "opacity-100",
-              "translate-y-0"
-            );
-          } else {
-            entry.target.classList.remove(
-              "opacity-100",
-              "translate-y-0"
-            );
-
-            entry.target.classList.add(
-              "opacity-0",
-              "translate-y-10"
-            );
-          }
-        });
+    const headingObserver = new IntersectionObserver(
+      ([entry]) => {
+        setHeadingVisible(entry.isIntersecting);
       },
-      {
-        threshold: 0.15,
-      }
+      { threshold: 0.2 }
     );
 
-    elements.forEach((element) => observer.observe(element));
+    if (heading) {
+      headingObserver.observe(heading);
+    }
 
-    return () => observer.disconnect();
+    const cardObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const index = Number(entry.target.dataset.index);
+
+          setVisibleCards((previous) => {
+            if (entry.isIntersecting) {
+              return previous.includes(index)
+                ? previous
+                : [...previous, index];
+            }
+
+            return previous.filter((item) => item !== index);
+          });
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    cardsRef.current.forEach((card) => {
+      if (card) cardObserver.observe(card);
+    });
+
+    return () => {
+      headingObserver.disconnect();
+      cardObserver.disconnect();
+    };
   }, []);
 
   return (
     <section
-      id="courses"
-      className="w-full bg-[#fffdf8] py-12 sm:py-14 lg:py-16 xl:py-[72px]"
+      id="courses-programmes"
+      className="relative overflow-hidden bg-background py-16 sm:py-20 lg:py-24"
     >
-      <Container size="wide">
-        {/* SECTION HEADING */}
+      {/* Background Decorations */}
+      <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-secondary/5 blur-3xl" />
+
+      <div className="pointer-events-none absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
+
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+
+        {/* --------------------------------
+            Section Heading
+        -------------------------------- */}
+
         <div
           ref={headingRef}
-          className="
-            mx-auto mb-10
-            flex max-w-[600px]
-            flex-col items-center
-            text-center
-            opacity-0 translate-y-10
-            transition-all duration-700 ease-out
-            sm:mb-12 lg:mb-10
-          "
+          className={`mx-auto mb-12 max-w-3xl text-center transition-all duration-1000 ease-out sm:mb-16 ${
+            headingVisible
+              ? "translate-y-0 opacity-100"
+              : "translate-y-8 opacity-0"
+          }`}
         >
-          <Text
-            variant="eyebrow"
-            color="goldMuted"
-            className="
-              mb-2
-              text-[10px]
-              font-bold
-              tracking-[2px]
-              sm:text-[11px]
-            "
-          >
-            ACADEMIC PROGRAMMES
-          </Text>
+          {/* Eyebrow */}
+          <div className="mb-5 flex items-center justify-center gap-3">
+            <span className="h-px w-9 bg-secondary" />
 
-          <Text
-            as="h2"
-            variant="h2"
-            color="primary"
-            className="
-              text-[25px]
-              font-bold
-              leading-tight
-              sm:text-[29px]
-              md:text-[32px]
-            "
-          >
-            Courses & Programmes Offered
-          </Text>
+            <span className="font-sans text-xs font-semibold uppercase tracking-[0.25em] text-gold-muted">
+              Academic Programmes
+            </span>
 
-          <Text
-            variant="small"
-            color="body"
-            align="center"
-            className="
-              mt-3
-              max-w-[430px]
-              text-[12px]
-              leading-[1.7]
-              sm:text-[13px]
-            "
-          >
-            Explore diverse academic programmes designed to build
-            knowledge, skills and opportunities for your future.
-          </Text>
+            <span className="h-px w-9 bg-secondary" />
+          </div>
 
-          {/* DECORATIVE DIVIDER */}
-          <span className="mt-4 h-[2px] w-12 bg-[#c3a365]" />
+          {/* Main Heading */}
+          <h2 className="font-serif text-3xl font-semibold leading-tight text-primary sm:text-4xl lg:text-[42px]">
+            Courses &amp; Programmes Offered
+          </h2>
+
+          {/* Description */}
+          <p className="mx-auto mt-5 max-w-2xl font-sans text-sm leading-7 text-muted sm:text-base">
+            Explore diverse academic programmes designed to build knowledge,
+            skills and opportunities for your future.
+          </p>
+
+          {/* Divider */}
+          <div className="mx-auto mt-6 h-[3px] w-16 rounded-full bg-secondary" />
         </div>
 
-        {/* COURSE CARDS */}
-        <div
-          className="
-            mx-auto grid max-w-[1120px]
-            grid-cols-1
-            gap-4
-            sm:grid-cols-2
-            lg:grid-cols-4
-            lg:gap-[17px]
-          "
-        >
-          {courses.map(({ Icon, code, title, description }, index) => (
-            <div
-              key={code}
-              ref={(element) => {
-                cardsRef.current[index] = element;
-              }}
-              style={{
-                transitionDelay: `${index * 120}ms`,
-              }}
-              className="
-                group relative
-                flex min-w-0
-                min-h-[270px]
-                flex-col items-center
-                overflow-hidden
-                rounded-[13px]
-                border border-[#eadcc2]
-                bg-[#fffdf9]
-                px-5 py-6
-                text-center
-                shadow-[0_4px_15px_rgba(0,0,0,0.045)]
+        {/* --------------------------------
+            Course Cards
+        -------------------------------- */}
 
-                opacity-0 translate-y-10
-                transition-all duration-700 ease-out
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 
-                hover:-translate-y-1
-                hover:border-[#c3a365]
-                hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)]
+          {courses.map(({ Icon, code, title, desc }, index) => {
+            const isVisible = visibleCards.includes(index);
 
-                sm:min-h-[275px]
-                lg:px-3
-                xl:px-5
-              "
-            >
-              {/* TOP GOLD BORDER */}
-              <span
-                className="
-                  absolute left-4 right-4 top-0
-                  h-[3px]
-                  bg-[#c3a365]
-                  transition-all duration-300
-                  group-hover:left-0
-                  group-hover:right-0
-                "
-              />
-
-              {/* ICON */}
-              <div
-                className="
-                  flex h-[54px] w-[54px]
-                  shrink-0 items-center justify-center
-                  rounded-full
-                  bg-[#edf1ed]
-                  text-[#006b63]
-                  transition-all duration-300
-                  group-hover:bg-[#006b63]
-                  group-hover:text-white
-                "
+            return (
+              <article
+                key={code}
+                ref={(el) => {
+                  cardsRef.current[index] = el;
+                }}
+                data-index={index}
+                className={`group relative flex min-h-[390px] flex-col overflow-hidden rounded-sm border border-secondary/20 bg-background-card shadow-sm transition-all duration-700 ease-out hover:-translate-y-2 hover:border-secondary/60 hover:shadow-xl ${
+                  isVisible
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-10 opacity-0"
+                }`}
+                style={{
+                  transitionDelay: `${index * 130}ms`,
+                }}
               >
-                <Icon size={26} strokeWidth={1.7} />
-              </div>
+                {/* Gold Top Accent */}
+                <div className="h-[4px] w-full bg-secondary transition-all duration-500 group-hover:h-[6px] group-hover:bg-primary" />
 
-              {/* COURSE CODE */}
-              <span
-                className="
-                  mt-3
-                  inline-flex items-center justify-center
-                  rounded-full
-                  border border-[#e6d0a8]
-                  bg-[#f7f0e3]
-                  px-3 py-[2px]
-                  text-[10px]
-                  font-bold
-                  leading-tight
-                  tracking-wide
-                  text-[#80602b]
-                "
-              >
-                {code}
-              </span>
+                <div className="flex flex-1 flex-col p-6 sm:p-7">
 
-              {/* COURSE TITLE */}
-              <Text
-                as="h3"
-                variant="h3"
-                color="primary"
-                className="
-                  mt-2
-                  min-h-[22px]
-                  text-[15px]
-                  font-bold
-                  leading-[1.3]
-                  sm:text-[15px]
-                "
-              >
-                {title}
-              </Text>
+                  {/* Icon and Number */}
+                  <div className="mb-7 flex items-center justify-between">
 
-              {/* COURSE DESCRIPTION */}
-              <Text
-                variant="small"
-                color="body"
-                align="center"
-                className="
-                  mt-2
-                  text-[11px]
-                  leading-[1.7]
-                  sm:text-[11px]
-                  lg:text-[10.5px]
-                  xl:text-[11px]
-                "
-              >
-                {description}
-              </Text>
-            </div>
-          ))}
+                    <div className="flex h-[66px] w-[66px] items-center justify-center rounded-sm border border-secondary/30 bg-background-secondary text-primary transition-all duration-500 group-hover:border-primary group-hover:bg-primary group-hover:text-white">
+                      <Icon
+                        size={32}
+                        strokeWidth={1.5}
+                        className="transition-transform duration-500 group-hover:scale-110"
+                      />
+                    </div>
+
+                    <span className="font-serif text-4xl font-bold text-primary/10 transition-colors duration-300 group-hover:text-secondary/30">
+                      0{index + 1}
+                    </span>
+                  </div>
+
+                  {/* Course Code */}
+                  <span className="mb-3 inline-flex w-fit items-center rounded-sm bg-secondary/10 px-3 py-1.5 font-sans text-xs font-bold tracking-wider text-gold-muted">
+                    {code}
+                  </span>
+
+                  {/* Course Title */}
+                  <h3 className="font-serif text-xl font-semibold leading-snug text-primary transition-colors duration-300 group-hover:text-gold-muted">
+                    {title}
+                  </h3>
+
+                  {/* Course Description */}
+                  <p className="mt-4 flex-1 font-sans text-sm leading-7 text-muted">
+                    {desc}
+                  </p>
+
+                  {/* Bottom Accent */}
+                  <div className="mt-7 flex items-center justify-between border-t border-secondary/20 pt-5">
+                    <span className="h-[2px] w-10 bg-secondary transition-all duration-500 group-hover:w-16" />
+
+                    <ArrowRight
+                      size={19}
+                      strokeWidth={1.6}
+                      className="text-primary transition-all duration-300 group-hover:translate-x-2"
+                    />
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+
         </div>
 
-        {/* EXPLORE BUTTON */}
-        <div
-          ref={buttonRef}
-          className="
-            mt-9 flex justify-center
-            opacity-0 translate-y-10
-            transition-all duration-700 ease-out
-            sm:mt-10
-          "
-        >
+        {/* --------------------------------
+            Explore Courses Button
+        -------------------------------- */}
+
+        <div className="mt-12 flex justify-center sm:mt-14">
           <a
-            href="/courses"
-            className="
-              inline-flex items-center justify-center
-              gap-2
-              rounded-[7px]
-              bg-[#006057]
-              px-6 py-2.5
-              text-[12px]
-              font-semibold
-              text-white
-              shadow-[0_4px_12px_rgba(0,96,87,0.18)]
-              transition-all duration-300
-              hover:-translate-y-0.5
-              hover:bg-[#004d46]
-              hover:shadow-lg
-              focus-visible:outline-2
-              focus-visible:outline-offset-4
-              focus-visible:outline-[#006057]
-            "
+            href="#courses-programmes"
+            className="group inline-flex items-center gap-3 rounded-sm bg-primary px-7 py-4 font-sans text-sm font-semibold tracking-wide text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-primary-dark hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
           >
             Explore All Courses
-            <ArrowRight size={15} />
+
+            <ArrowRight
+              size={18}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
           </a>
         </div>
-      </Container>
+
+      </div>
     </section>
   );
 }

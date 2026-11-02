@@ -2,521 +2,259 @@
 
 import { useEffect, useRef } from "react";
 import {
-  UsersRound,
+  Users,
   CalendarDays,
   Star,
   Activity,
-  GraduationCap,
   ArrowRight,
+  GraduationCap,
 } from "lucide-react";
 
-import { Text,Container } from "..";
-
-const alumniFeatures = [
+const ALUMNI_CARDS = [
   {
-    Icon: UsersRound,
+    id: 1,
+    icon: Users,
     title: "Alumni Association",
     description:
       "A vibrant community of graduates who stay connected, mentor current students and contribute to the growth of MVN JS & RVR College of Arts & Science.",
-    linkText: "Learn More",
+    link: "https://mvnjsrvrcollege.ac.in/page.php?id=alumni-meet&type=alumni",
+    linkLabel: "Learn More",
   },
   {
-    Icon: CalendarDays,
+    id: 2,
+    icon: CalendarDays,
     title: "Alumni Meet",
     description:
-      "Annual alumni gatherings that bring together graduates from all batches to celebrate shared memories, reconnect with faculty and strengthen relationships.",
-    linkText: "View Alumni Meet",
+      "Annual alumni gatherings that bring together graduates from all batches to celebrate shared memories, reconnect with faculty and inspire future students.",
+    link: "https://mvnjsrvrcollege.ac.in/page.php?id=alumni-meet&type=alumni",
+    linkLabel: "View Alumni Meet",
   },
   {
-    Icon: Star,
+    id: 3,
+    icon: Star,
     title: "Distinguished Alumni",
     description:
-      "Honouring graduates who have made outstanding contributions in their respective fields — academics, public service, business and entrepreneurship.",
-    linkText: "Our Achievers",
+      "Honouring graduates who have made outstanding contributions in their respective fields — academics, public service, business and beyond.",
+    link: "https://mvnjsrvrcollege.ac.in/page.php?id=alumni-meet&type=alumni",
+    linkLabel: "Our Achievers",
   },
   {
-    Icon: Activity,
+    id: 4,
+    icon: Activity,
     title: "Alumni Activities",
     description:
       "From guest lectures and mentorship programmes to community initiatives — our alumni actively engage with and enrich campus life year-round.",
-    linkText: "See Activities",
+    link: "https://mvnjsrvrcollege.ac.in/page.php?id=alumni-meet&type=alumni",
+    linkLabel: "See Activities",
   },
 ];
 
+const ALUMNI_URL =
+  "https://mvnjsrvrcollege.ac.in/page.php?id=alumni-meet&type=alumni";
+
 export default function AlumniSection() {
-  const headingRef = useRef(null);
-  const bannerRef = useRef(null);
+  const statRef = useRef(null);
   const cardsRef = useRef([]);
-  const buttonRef = useRef(null);
 
   useEffect(() => {
-    const heading = headingRef.current;
-    const banner = bannerRef.current;
-    const cards = cardsRef.current.filter(Boolean);
-    const button = buttonRef.current;
+    const observers = [];
 
-    const elements = [
-      heading,
-      banner,
-      ...cards,
-      button,
-    ].filter(Boolean);
+    const observeElement = (element, visibleClasses, hiddenClasses) => {
+      if (!element) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove(
-              "opacity-0",
-              "translate-y-10"
-            );
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          visibleClasses.forEach((className) =>
+            element.classList.toggle(className, entry.isIntersecting)
+          );
 
-            entry.target.classList.add(
-              "opacity-100",
-              "translate-y-0"
-            );
-          } else {
-            entry.target.classList.remove(
-              "opacity-100",
-              "translate-y-0"
-            );
+          hiddenClasses.forEach((className) =>
+            element.classList.toggle(className, !entry.isIntersecting)
+          );
+        },
+        { threshold: 0.15 }
+      );
 
-            entry.target.classList.add(
-              "opacity-0",
-              "translate-y-10"
-            );
-          }
-        });
-      },
-      {
-        threshold: 0.15,
-      }
+      observer.observe(element);
+      observers.push(observer);
+    };
+
+    observeElement(
+      statRef.current,
+      ["opacity-100", "translate-y-0"],
+      ["opacity-0", "translate-y-8"]
     );
 
-    elements.forEach((element) => observer.observe(element));
+    cardsRef.current.forEach((card) => {
+      observeElement(
+        card,
+        ["opacity-100", "translate-y-0"],
+        ["opacity-0", "translate-y-10"]
+      );
+    });
 
-    return () => observer.disconnect();
+    return () => observers.forEach((observer) => observer.disconnect());
   }, []);
 
   return (
     <section
       id="alumni"
-      className="
-        w-full
-        bg-background-secondary
-        py-14
-        sm:py-16
-        lg:py-[68px]
-      "
+      className="relative overflow-hidden bg-background-secondary  py-20 sm:py-24 lg:py-28"
     >
-      <Container size="wide">
+      {/* Background Decorations */}
+      <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-[#c3a365]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 bottom-10 h-80 w-80 rounded-full bg-[#075e59]/5 blur-3xl" />
 
-        {/* SECTION HEADING */}
-        <div
-          ref={headingRef}
-          className="
-            mx-auto
-            mb-9
-            flex
-            max-w-[650px]
-            flex-col
-            items-center
-            text-center
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
 
-            opacity-0
-            translate-y-10
-            transition-all
-            duration-700
-            ease-out
+        {/* Section Heading */}
+        <div className="mx-auto mb-14 max-w-3xl text-center sm:mb-16">
+          <span className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.25em] text-[#92723a] sm:text-sm">
+            <span className="h-px w-7 bg-[#c3a365]" />
+            ALUMNI &amp; COMMUNITY
+            <span className="h-px w-7 bg-[#c3a365]" />
+          </span>
 
-            sm:mb-10
-          "
-        >
-          <Text
-            variant="eyebrow"
-            color="goldMuted"
-            className="
-              mb-2
-              text-[10px]
-              font-bold
-              tracking-[2px]
-              sm:text-[11px]
-            "
-          >
-            ALUMNI & COMMUNITY
-          </Text>
-
-          <Text
-            as="h2"
-            variant="h2"
-            color="primary"
-            className="
-              text-[26px]
-              font-bold
-              leading-tight
-              sm:text-[29px]
-              md:text-[32px]
-            "
-          >
+          <h2 className="mt-5 font-serif text-3xl font-bold leading-tight text-[#064b47] sm:text-4xl lg:text-5xl">
             Our Alumni Community
-          </Text>
+          </h2>
 
-          <Text
-            variant="small"
-            color="body"
-            align="center"
-            className="
-              mt-3
-              max-w-[500px]
-              text-[12px]
-              leading-relaxed
-              sm:text-[13px]
-            "
-          >
-            Graduates who carry MVN&apos;s values forward — in their careers,
-            communities and lives.
-          </Text>
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#647473] sm:text-base sm:leading-8">
+            Graduates who carry MVN&apos;s values forward — in their
+            careers, communities and lives.
+          </p>
 
-          {/* GOLD DIVIDER */}
-          <span className="mt-4 h-[2px] w-12 bg-[#c3a365]" />
+          <div className="mx-auto mt-7 flex items-center justify-center gap-2">
+            <span className="h-[2px] w-10 bg-[#c3a365]" />
+            <span className="h-2 w-2 rotate-45 bg-[#c3a365]" />
+            <span className="h-[2px] w-10 bg-[#c3a365]" />
+          </div>
         </div>
 
-        {/* ALUMNI STAT BANNER */}
+        {/* Alumni Statistics Banner */}
         <div
-          ref={bannerRef}
-          className="
-            mx-auto
-            mb-10
-            flex
-            max-w-[870px]
-            items-center
-            rounded-[13px]
-            bg-[#08776e]
-            px-5
-            py-6
-
-            shadow-[0_8px_22px_rgba(0,107,99,0.18)]
-
-            opacity-0
-            translate-y-10
-            transition-all
-            duration-700
-            ease-out
-
-            sm:px-8
-            sm:py-7
-          "
-          style={{
-            transitionDelay: "120ms",
-          }}
+          ref={statRef}
+          className="relative mb-12 translate-y-8 overflow-hidden rounded-2xl bg-[#064b47] p-7 opacity-0 shadow-xl shadow-[#064b47]/10 transition-all duration-1000 ease-out sm:mb-16 sm:p-10 lg:p-12"
         >
-          {/* ICON */}
-          <div
-            className="
-              flex
-              h-[54px]
-              w-[54px]
-              shrink-0
-              items-center
-              justify-center
-              rounded-full
-              bg-[rgba(255,255,255,0.12)]
-              text-[#c3a365]
+          {/* Decorative Elements */}
+          <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full border border-white/10" />
+          <div className="pointer-events-none absolute -right-5 -top-12 h-48 w-48 rounded-full border border-white/10" />
+          <div className="pointer-events-none absolute -bottom-20 left-1/3 h-52 w-52 rounded-full bg-[#c3a365]/10 blur-3xl" />
 
-              sm:h-[58px]
-              sm:w-[58px]
-            "
-          >
-            <GraduationCap
-              size={28}
-              strokeWidth={1.8}
-            />
-          </div>
+          <div className="relative flex flex-col items-center gap-7 text-center md:flex-row md:justify-between md:text-left">
 
-          {/* COUNT */}
-          <div className="ml-4 sm:ml-5">
-            <div className="flex items-end">
-              <span
-                className="
-                  text-[34px]
-                  font-bold
-                  leading-none
-                  text-white
-                  sm:text-[38px]
-                "
-              >
+            {/* Icon */}
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-[#c3a365]/30 bg-white/10 text-[#e2c58d]">
+              <GraduationCap size={42} strokeWidth={1.5} />
+            </div>
+
+            {/* Number and Label */}
+            <div className="flex flex-col items-center md:items-start">
+              <div className="font-serif text-5xl font-bold tracking-tight text-white sm:text-6xl">
                 1,000
-              </span>
+                <span className="text-[#c3a365]">+</span>
+              </div>
 
-              <span
-                className="
-                  mb-[2px]
-                  ml-1
-                  text-[24px]
-                  font-bold
-                  leading-none
-                  text-[#c3a365]
-                  sm:text-[27px]
-                "
-              >
-                +
+              <span className="mt-2 text-sm font-semibold uppercase tracking-[0.18em] text-[#e2c58d]">
+                Registered Alumni
               </span>
             </div>
 
-            <p
-              className="
-                mt-1
-                text-[10px]
-                font-bold
-                tracking-[1px]
-                text-[#dceae7]
-                sm:text-[11px]
-              "
-            >
-              REGISTERED ALUMNI
-            </p>
+            {/* Description */}
+            <div className="max-w-md md:ml-auto">
+              <p className="text-sm leading-7 text-white/75 sm:text-base">
+                As reported in the college&apos;s published records — a
+                growing network of proud MVN graduates connected through
+                shared experiences and achievements.
+              </p>
+            </div>
           </div>
-
-          {/* DIVIDER */}
-          <div
-            className="
-              mx-5
-              hidden
-              h-[40px]
-              w-px
-              bg-[rgba(255,255,255,0.35)]
-              sm:block
-              lg:mx-7
-            "
-          />
-
-          {/* DESCRIPTION */}
-          <p
-            className="
-              hidden
-              max-w-[450px]
-              text-[11px]
-              font-medium
-              leading-[1.8]
-              text-white
-              sm:block
-              sm:text-[11px]
-            "
-          >
-            As reported in the college&apos;s published records — a growing
-            network of proud MVN graduates.
-          </p>
         </div>
 
-        {/* ALUMNI CARDS */}
-        <div
-          className="
-            mx-auto
-            grid
-            max-w-[870px]
-            grid-cols-1
-            gap-4
+        {/* Alumni Cards */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
+          {ALUMNI_CARDS.map((card, index) => {
+            const Icon = card.icon;
 
-            sm:grid-cols-2
-            lg:grid-cols-4
-            lg:gap-[18px]
-          "
-        >
-          {alumniFeatures.map(
-            (
-              {
-                Icon,
-                title,
-                description,
-                linkText,
-              },
-              index
-            ) => (
-              <div
-                key={title}
-                ref={(element) => {
-                  cardsRef.current[index] = element;
+            return (
+              <article
+                key={card.id}
+                ref={(el) => {
+                  cardsRef.current[index] = el;
                 }}
                 style={{
-                  transitionDelay: `${index * 120}ms`,
+                  transitionDelay: `${index * 100}ms`,
                 }}
-                className="
-                  group
-                  flex
-                  min-h-[245px]
-                  min-w-0
-                  flex-col
-                  rounded-[13px]
-                  border
-                  border-[#e4e8e5]
-                  bg-[#fffdf9]
-                  px-5
-                  py-6
-
-                  shadow-[0_4px_15px_rgba(0,0,0,0.045)]
-
-                  opacity-0
-                  translate-y-10
-                  transition-all
-                  duration-700
-                  ease-out
-
-                  hover:-translate-y-1
-                  hover:border-[#c3a365]
-                  hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)]
-
-                  lg:min-h-[245px]
-                  lg:px-5
-                "
+                className="group relative flex translate-y-10 flex-col overflow-hidden rounded-2xl border border-[#e8e2d4] bg-white p-7 opacity-0 shadow-[0_5px_25px_rgba(6,75,71,0.05)] transition-all duration-700 ease-out hover:-translate-y-2 hover:border-[#c3a365]/60 hover:shadow-[0_18px_40px_rgba(6,75,71,0.12)] sm:p-8"
               >
-                {/* ICON */}
-                <div
-                  className="
-                    flex
-                    h-[44px]
-                    w-[44px]
-                    shrink-0
-                    items-center
-                    justify-center
-                    rounded-[9px]
-                    bg-[#e4efec]
-                    text-[#006b63]
+                {/* Top Gold Accent */}
+                <div className="absolute left-0 top-0 h-1 w-0 bg-[#c3a365] transition-all duration-500 group-hover:w-full" />
 
-                    transition-all
-                    duration-300
+                {/* Decorative Circle */}
+                <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#075e59]/[0.03] transition-transform duration-700 group-hover:scale-150" />
 
-                    group-hover:bg-[#006b63]
-                    group-hover:text-white
-                  "
-                >
+                {/* Icon */}
+                <div className="relative mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#075e59]/[0.07] text-[#075e59] transition-all duration-500 group-hover:bg-[#075e59] group-hover:text-white group-hover:shadow-lg group-hover:shadow-[#075e59]/20">
                   <Icon
-                    size={22}
-                    strokeWidth={1.7}
+                    size={30}
+                    strokeWidth={1.6}
+                    className="transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
 
-                {/* TITLE */}
-                <Text
-                  as="h3"
-                  variant="h3"
-                  color="primary"
-                  className="
-                    mt-4
-                    text-[14px]
-                    font-bold
-                    leading-tight
-                  "
+                {/* Title */}
+                <h3 className="font-serif text-xl font-bold leading-snug text-[#064b47] transition-colors duration-300 group-hover:text-[#92723a]">
+                  {card.title}
+                </h3>
+
+                {/* Divider */}
+                <div className="my-5 flex items-center gap-2">
+                  <span className="h-[2px] w-9 bg-[#c3a365] transition-all duration-500 group-hover:w-14" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#c3a365]" />
+                </div>
+
+                {/* Description */}
+                <p className="flex-1 text-sm leading-7 text-[#647473]">
+                  {card.description}
+                </p>
+
+                {/* Link */}
+                <a
+                  href={card.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#92723a] transition-all duration-300 hover:gap-3 hover:text-primary "
                 >
-                  {title}
-                </Text>
-
-                {/* DESCRIPTION */}
-                <Text
-                  variant="small"
-                  color="body"
-                  className="
-                    mt-3
-                    text-[10px]
-                    leading-[1.9]
-                    sm:text-[10px]
-                  "
-                >
-                  {description}
-                </Text>
-
-                {/* LINK */}
-                <button
-                  className="
-                    mt-auto
-                    flex
-                    items-center
-                    gap-1
-                    pt-4
-                    text-left
-                    text-[10px]
-                    font-bold
-                    text-[#c3a365]
-
-                    transition-all
-                    duration-300
-
-                    hover:text-[#006b63]
-                  "
-                >
-                  {linkText}
-
+                  {card.linkLabel}
                   <ArrowRight
-                    size={13}
-                    strokeWidth={1.8}
-                    className="
-                      transition-transform
-                      duration-300
-                      group-hover:translate-x-1
-                    "
+                    size={16}
+                    strokeWidth={2}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
                   />
-                </button>
-              </div>
-            )
-          )}
+                </a>
+              </article>
+            );
+          })}
         </div>
 
-        {/* EXPLORE BUTTON */}
-        <div
-          ref={buttonRef}
-          className="
-            mt-10
-            flex
-            justify-center
-
-            opacity-0
-            translate-y-10
-            transition-all
-            duration-700
-            ease-out
-          "
-          style={{
-            transitionDelay: "500ms",
-          }}
-        >
-          <button
-            className="
-              group
-              inline-flex
-              items-center
-              gap-2
-              rounded-full
-              bg-[#08776e]
-              px-7
-              py-3
-              text-[11px]
-              font-bold
-              text-white
-
-              shadow-[0_6px_16px_rgba(0,107,99,0.22)]
-
-              transition-all
-              duration-300
-
-              hover:-translate-y-[2px]
-              hover:bg-[#006b63]
-              hover:shadow-[0_10px_22px_rgba(0,107,99,0.28)]
-            "
+        {/* Explore Alumni CTA */}
+        <div className="mt-14 flex justify-center sm:mt-16">
+          <a
+            href={ALUMNI_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-3 rounded-full bg-[#075e59] px-8 py-4 text-sm font-bold tracking-wide text-white shadow-lg shadow-[#075e59]/15 transition-all duration-300 hover:-translate-y-1 hover:bg-[#064b47] hover:shadow-xl"
           >
             Explore Alumni
-
             <ArrowRight
-              size={15}
-              strokeWidth={1.8}
-              className="
-                transition-transform
-                duration-300
-                group-hover:translate-x-1
-              "
+              size={18}
+              strokeWidth={2}
+              className="transition-transform duration-300 group-hover:translate-x-1"
             />
-          </button>
+          </a>
         </div>
 
-      </Container>
+      </div>
     </section>
   );
 }

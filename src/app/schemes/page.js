@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+
 import {
   GraduationCap,
   Wallet,
@@ -9,6 +10,7 @@ import {
   Users,
   Building2,
   CheckCircle2,
+  ArrowRight,
 } from "lucide-react";
 
 import Text from "@/components/ui/Text";
@@ -116,12 +118,14 @@ const applicationSteps = [
   },
 ];
 
+// Scroll Reveal Hook
 function useScrollReveal() {
   const sectionRef = useRef(null);
   const [visibleItems, setVisibleItems] = useState({});
 
   useEffect(() => {
-    const elements = sectionRef.current?.querySelectorAll("[data-reveal]");
+    const elements =
+      sectionRef.current?.querySelectorAll("[data-reveal]");
 
     if (!elements?.length) return;
 
@@ -147,7 +151,13 @@ function useScrollReveal() {
   return { sectionRef, visibleItems };
 }
 
-function Reveal({ id, visibleItems, children, className = "" }) {
+// Reveal Component
+function Reveal({
+  id,
+  visibleItems,
+  children,
+  className = "",
+}) {
   return (
     <div
       data-reveal={id}
@@ -170,15 +180,19 @@ export default function SchemesPage() {
   const { sectionRef, visibleItems } = useScrollReveal();
 
   return (
-    <main ref={sectionRef} className="w-full overflow-hidden bg-[#fffdf8]">
+    <main
+      ref={sectionRef}
+      className="w-full overflow-hidden bg-[#fffdf8]"
+    >
+      {/* ================= HERO SECTION ================= */}
 
-      {/* HERO SECTION */}
-
-      <section className="bg-[#f5f1e7] py-14 sm:py-20 lg:py-24">
+      <section className="bg-[#f5f1e7] py-16 sm:py-20 lg:py-24">
         <Container size="wide">
           <div className="mx-auto max-w-3xl text-center">
-
-            <Reveal id="hero-label" visibleItems={visibleItems}>
+            <Reveal
+              id="hero-label"
+              visibleItems={visibleItems}
+            >
               <Text
                 variant="eyebrow"
                 color="goldMuted"
@@ -188,7 +202,10 @@ export default function SchemesPage() {
               </Text>
             </Reveal>
 
-            <Reveal id="hero-title" visibleItems={visibleItems}>
+            <Reveal
+              id="hero-title"
+              visibleItems={visibleItems}
+            >
               <Text
                 as="h1"
                 variant="h1"
@@ -199,32 +216,40 @@ export default function SchemesPage() {
               </Text>
             </Reveal>
 
-            <Reveal id="hero-description" visibleItems={visibleItems}>
+            <Reveal
+              id="hero-description"
+              visibleItems={visibleItems}
+            >
               <Text
                 color="body"
                 className="mx-auto mt-5 max-w-2xl text-[13px] leading-7 sm:text-[15px]"
               >
-                Explore scholarship opportunities and student welfare
-                schemes designed to support education, encourage academic
-                excellence and make higher education accessible to all.
+                Explore scholarship opportunities and student
+                welfare schemes designed to support education,
+                encourage academic excellence and make higher
+                education accessible to all.
               </Text>
             </Reveal>
 
-            <Reveal id="hero-divider" visibleItems={visibleItems}>
+            <Reveal
+              id="hero-divider"
+              visibleItems={visibleItems}
+            >
               <div className="mx-auto mt-6 h-[3px] w-14 rounded-full bg-[#c3a365]" />
             </Reveal>
-
           </div>
         </Container>
       </section>
 
-      {/* AVAILABLE SCHEMES */}
+      {/* ================= AVAILABLE SCHEMES ================= */}
 
-      <section className="bg-[#fffdf8] py-12 sm:py-16 lg:py-20">
+      <section className="bg-[#fffdf8] py-14 sm:py-16 lg:py-20">
         <Container size="wide">
-
-          <Reveal id="schemes-heading" visibleItems={visibleItems}>
-            <div className="mb-10 text-center sm:mb-12">
+          <Reveal
+            id="schemes-heading"
+            visibleItems={visibleItems}
+          >
+            <div className="mb-10 text-center sm:mb-14">
               <Text
                 variant="eyebrow"
                 color="goldMuted"
@@ -246,101 +271,114 @@ export default function SchemesPage() {
                 color="body"
                 className="mx-auto mt-3 max-w-xl text-[13px] leading-7 sm:text-[15px]"
               >
-                Financial assistance opportunities to help students
-                pursue their academic goals.
+                Financial assistance opportunities to help
+                students pursue their academic goals.
               </Text>
 
               <div className="mx-auto mt-5 h-[2px] w-12 bg-[#c3a365]" />
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          {/* Full Width Sections */}
+
+          <div>
             {schemes.map((scheme, index) => {
               const Icon = scheme.icon;
-              const id = `scheme-${index}`;
 
               return (
                 <Reveal
                   key={scheme.title}
-                  id={id}
+                  id={`scheme-${index}`}
                   visibleItems={visibleItems}
-                  className="h-full"
                 >
-                  <article
-                    className="
-                      group relative flex h-full flex-col
-                      overflow-hidden rounded-2xl
-                      border border-[#ead9bb]
-                      bg-[#fffefa] p-5 sm:p-6
-                      shadow-[0_5px_18px_rgba(35,50,40,0.05)]
-                      transition-all duration-300
-                      hover:-translate-y-2 hover:shadow-xl
-                    "
+                  <section
+                    className={`
+                      group py-9 sm:py-11 lg:py-12
+                      ${
+                        index !== 0
+                          ? "border-t border-[#e9dfce]"
+                          : ""
+                      }
+                    `}
                   >
-                    <div className="absolute left-5 right-5 top-0 h-[3px] rounded-b-full bg-[#c3a365]" />
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-[90px_1fr] lg:grid-cols-[110px_1fr] lg:gap-10">
+                      {/* Icon */}
 
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#eaf0ec]">
-                        <Icon
-                          size={27}
-                          strokeWidth={1.7}
-                          className="text-[#006d65]"
-                        />
+                      <div className="flex items-start">
+                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#eaf0ec] sm:h-[76px] sm:w-[76px]">
+                          <Icon
+                            size={32}
+                            strokeWidth={1.6}
+                            className="text-[#006d65]"
+                          />
+                        </div>
                       </div>
 
-                      <span className="rounded-full border border-[#e8d2ad] bg-[#f8f1e5] px-3 py-1 text-center text-[10px] font-semibold text-[#92713d] sm:text-[11px]">
-                        {scheme.category}
-                      </span>
-                    </div>
+                      {/* Content */}
 
-                    <Text
-                      as="h3"
-                      variant="h3"
-                      color="primary"
-                      className="mt-5 text-[18px] leading-snug sm:text-[20px]"
-                    >
-                      {scheme.title}
-                    </Text>
-
-                    <Text
-                      color="body"
-                      className="mt-3 text-[13px] leading-7 sm:text-[14px]"
-                    >
-                      {scheme.description}
-                    </Text>
-
-                    <div className="mt-5 border-t border-[#eee4d4] pt-4">
-                      <Text
-                        variant="label"
-                        color="primaryDark"
-                        className="mb-3 text-[12px]"
-                      >
-                        Key Benefits
-                      </Text>
-
-                      <ul className="space-y-2">
-                        {scheme.benefits.map((benefit) => (
-                          <li
-                            key={benefit}
-                            className="flex items-start gap-2"
+                      <div>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <Text
+                            variant="eyebrow"
+                            color="goldMuted"
+                            className="text-[10px] tracking-[1.5px] sm:text-[11px]"
                           >
-                            <CheckCircle2
-                              size={15}
-                              className="mt-1 shrink-0 text-[#08766c]"
-                            />
+                            {scheme.category}
+                          </Text>
+                        </div>
 
-                            <Text
-                              variant="small"
-                              color="body"
-                              className="text-[12px] leading-5 sm:text-[13px]"
-                            >
-                              {benefit}
-                            </Text>
-                          </li>
-                        ))}
-                      </ul>
+                        <Text
+                          as="h3"
+                          variant="h3"
+                          color="primary"
+                          className="mt-2 text-[20px] leading-snug sm:text-[24px] lg:text-[27px]"
+                        >
+                          {scheme.title}
+                        </Text>
+
+                        <Text
+                          color="body"
+                          className="mt-3 max-w-3xl text-[13px] leading-7 sm:text-[14px] lg:text-[15px]"
+                        >
+                          {scheme.description}
+                        </Text>
+
+                        {/* Benefits */}
+
+                        <div className="mt-5">
+                          <Text
+                            variant="label"
+                            color="primaryDark"
+                            className="mb-3 text-[12px]"
+                          >
+                            Key Benefits
+                          </Text>
+
+                          <div className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+                            {scheme.benefits.map((benefit) => (
+                              <div
+                                key={benefit}
+                                className="flex items-start gap-2"
+                              >
+                                <CheckCircle2
+                                  size={16}
+                                  className="mt-0.5 shrink-0 text-[#08766c]"
+                                />
+
+                                <Text
+                                  variant="small"
+                                  color="body"
+                                  className="text-[12px] leading-5 sm:text-[13px]"
+                                >
+                                  {benefit}
+                                </Text>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </article>
+                  </section>
                 </Reveal>
               );
             })}
@@ -348,13 +386,15 @@ export default function SchemesPage() {
         </Container>
       </section>
 
-      {/* APPLICATION PROCESS */}
+      {/* ================= APPLICATION PROCESS ================= */}
 
-      <section className="bg-[#f5f1e7] py-12 sm:py-16 lg:py-20">
+      <section className="bg-[#f5f1e7] py-14 sm:py-16 lg:py-20">
         <Container size="wide">
-
-          <Reveal id="process-heading" visibleItems={visibleItems}>
-            <div className="mb-10 text-center">
+          <Reveal
+            id="process-heading"
+            visibleItems={visibleItems}
+          >
+            <div className="mb-12 text-center">
               <Text
                 variant="eyebrow"
                 color="goldMuted"
@@ -376,30 +416,27 @@ export default function SchemesPage() {
                 color="body"
                 className="mt-3 text-[13px] sm:text-[15px]"
               >
-                Follow these steps when applying for an eligible scheme.
+                Follow these steps when applying for an
+                eligible scheme.
               </Text>
 
               <div className="mx-auto mt-5 h-[2px] w-12 bg-[#c3a365]" />
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Horizontal Process */}
+
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             {applicationSteps.map((step, index) => (
               <Reveal
                 key={step.number}
                 id={`step-${index}`}
                 visibleItems={visibleItems}
-                className="h-full"
               >
-                <div className="
-                  h-full rounded-2xl border border-[#e7d6b8]
-                  bg-[#fffefa] p-5 sm:p-6
-                  transition-all duration-300
-                  hover:-translate-y-1 hover:shadow-lg
-                ">
+                <div className="relative border-l-2 border-[#c3a365] py-1 pl-5 sm:pl-6">
                   <Text
                     color="goldMuted"
-                    className="text-[28px] font-bold"
+                    className="text-[30px] font-bold leading-none sm:text-[34px]"
                   >
                     {step.number}
                   </Text>
@@ -408,7 +445,7 @@ export default function SchemesPage() {
                     as="h3"
                     variant="h3"
                     color="primary"
-                    className="mt-3 text-[18px]"
+                    className="mt-4 text-[17px] sm:text-[19px]"
                   >
                     {step.title}
                   </Text>
@@ -426,17 +463,16 @@ export default function SchemesPage() {
         </Container>
       </section>
 
-      {/* IMPORTANT INFORMATION */}
+      {/* ================= IMPORTANT INFORMATION ================= */}
 
-      <section className="bg-[#fffdf8] py-12 sm:py-16">
+      <section className="bg-[#fffdf8] py-14 sm:py-16">
         <Container size="wide">
           <Reveal
             id="important-information"
             visibleItems={visibleItems}
           >
-            <div className="mx-auto max-w-4xl rounded-2xl border border-[#e6d4b4] bg-[#f8f3e9] p-6 sm:p-8 lg:p-10">
+            <div className="mx-auto max-w-4xl border-l-[3px] border-[#c3a365] bg-[#f8f3e9] p-6 sm:p-8 lg:p-10">
               <div className="flex items-start gap-4 sm:gap-5">
-
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e7eee9]">
                   <ShieldCheck
                     size={25}
@@ -458,20 +494,20 @@ export default function SchemesPage() {
                     color="body"
                     className="mt-3 text-[13px] leading-7 sm:text-[14px]"
                   >
-                    Scheme availability, eligibility, application dates
-                    and benefits are subject to the latest government
-                    guidelines. Students are advised to verify the
-                    information through the respective official portals
-                    or contact the college administration before applying.
+                    Scheme availability, eligibility,
+                    application dates and benefits are subject
+                    to the latest government guidelines.
+                    Students are advised to verify the
+                    information through the respective official
+                    portals or contact the college administration
+                    before applying.
                   </Text>
                 </div>
-
               </div>
             </div>
           </Reveal>
         </Container>
       </section>
-
     </main>
   );
 }

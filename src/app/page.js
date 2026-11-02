@@ -1,4 +1,4 @@
-import { AboutSection, CoursesSection, FacilitiesSection, HeroSlider, LeadershipSection, OurPrincipal,WhyChooseSection,LifeAtMVN,AchievementsSection,AlumniSection,ContactSection } from "@/components";
+import { AboutSection, CoursesSection, FacilitiesSection, HeroSlider, NewsEvents,LeadershipSection,OrgChart, OurPrincipal,WhyChooseSection,LifeAtMVN,AchievementsSection,AlumniSection,ContactSection } from "@/components";
 import Image from "next/image";
 
 export default function Home() {
@@ -8,10 +8,12 @@ export default function Home() {
       <AboutSection />
       <LeadershipSection />
       <OurPrincipal />
+      <OrgChart />
       <WhyChooseSection />
       <CoursesSection />
       <FacilitiesSection />
       <LifeAtMVN />
+      <NewsEvents />
       <AchievementsSection />
       <AlumniSection />
       <ContactSection />
