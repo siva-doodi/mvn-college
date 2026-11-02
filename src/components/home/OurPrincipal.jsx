@@ -3,9 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-
-
-export default function LeadershipSection() {
+export default function PrincipalSection() {
   const contentRef = useRef(null);
   const imageRef = useRef(null);
 
@@ -14,14 +12,8 @@ export default function LeadershipSection() {
 
   useEffect(() => {
     const elements = [
-      {
-        ref: contentRef,
-        setVisible: setContentVisible,
-      },
-      {
-        ref: imageRef,
-        setVisible: setImageVisible,
-      },
+      { ref: contentRef, setVisible: setContentVisible },
+      { ref: imageRef, setVisible: setImageVisible },
     ];
 
     const observer = new IntersectionObserver(
@@ -30,199 +22,112 @@ export default function LeadershipSection() {
           const target = elements.find(
             (item) => item.ref.current === entry.target
           );
-
-          if (target) {
-            target.setVisible(entry.isIntersecting);
-          }
+          if (target) target.setVisible(entry.isIntersecting);
         });
       },
       { threshold: 0.15 }
     );
 
     elements.forEach(({ ref }) => {
-      if (ref.current) {
-        observer.observe(ref.current);
-      }
+      if (ref.current) observer.observe(ref.current);
     });
 
     return () => observer.disconnect();
   }, []);
 
   const childAnimation = (index, visible) => ({
-    className: `
-      transform transition-all duration-[600ms]
-      ease-[cubic-bezier(0.22,1,0.36,1)]
-      motion-reduce:transition-none
-      ${visible
-        ? "translate-y-0 opacity-100"
-        : "translate-y-7 opacity-0"
-      }
-    `,
-    style: {
-      transitionDelay: visible ? `${0.05 + index * 0.1}s` : "0s",
-    },
+    className: `transform transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+      visible ? "translate-y-0 opacity-100" : "translate-y-7 opacity-0"
+    }`,
+    style: { transitionDelay: visible ? `${0.05 + index * 0.1}s` : "0s" },
   });
+
+  // TODO: replace with the Principal's actual message / profile
+  const paragraphs = [
+    "N. Ananda Mahani serves as the Principal of MVN JS & RVR College of Arts & Science, guiding the academic and administrative activities of the institution.",
+    "Under her leadership, the college focuses on academic excellence, student development, and a supportive learning environment for students and staff.",
+    "She encourages students to build their knowledge, skills, and values so they are prepared for a successful future.",
+  ];
 
   return (
     <section
-      id="secretary-correspondent"
-      className="box-border w-full  px-4 py-9 min-[601px]:px-6 min-[601px]:py-14"
+      id="principal"
+      className="w-full overflow-x-clip px-4 py-10 sm:px-6 md:py-14 lg:px-8"
     >
-      <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 items-center  gap-7 min-[901px]:grid-cols-[minmax(0,1.05fr)_minmax(0,0.85fr)] min-[901px]:gap-10">
-        {/* Image Content */}
-         <div
+      <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.05fr)] lg:gap-12">
+        {/* IMAGE CARD (left) */}
+        <div
           ref={imageRef}
-          className={`
-    group relative flex min-w-0 flex-col overflow-hidden rounded-[14px]
-    border border-[rgba(214,184,117,0.65)]
-    bg-[#fffdf8]
-    shadow-[0_10px_28px_rgba(0,0,0,0.2)]
-    transition-all duration-[750ms]
-    ease-[cubic-bezier(0.22,1,0.36,1)]
-    hover:-translate-y-[6px]
-    hover:shadow-[0_18px_40px_rgba(0,0,0,0.28),0_6px_14px_rgba(0,0,0,0.12)]
-    motion-reduce:transition-none
-    ${imageVisible ? "translate-x-0 opacity-100" : "translate-x-12 opacity-0"}
-    max-[900px]:mx-auto max-[900px]:w-full max-[900px]:max-w-[650px]
-  `}
+          className={`group relative mx-auto flex w-full min-w-0 max-w-[650px] flex-col overflow-hidden rounded-[14px] border border-[rgba(214,184,117,0.65)] bg-[#fffdf8] shadow-[0_10px_28px_rgba(0,0,0,0.2)] transition-all duration-[750ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none lg:mx-0 lg:max-w-none lg:hover:-translate-y-[6px] lg:hover:shadow-[0_18px_40px_rgba(0,0,0,0.28),0_6px_14px_rgba(0,0,0,0.12)] ${
+            imageVisible
+              ? "translate-x-0 opacity-100"
+              : "-translate-x-6 opacity-0 md:-translate-x-12"
+          }`}
         >
-          {/* Image box: fixed ratio so `fill` works */}
-          <div className="relative aspect-[4/3] w-full overflow-hidden min-[901px]:aspect-auto min-[901px]:h-[440px]">
+          <div className="relative aspect-[4/3] w-full overflow-hidden lg:aspect-auto lg:h-[440px]">
             <Image
               src="/images/principal_madam.png"
-              alt="Sri M. V. Satyanarayana Murthy, Secretary and Correspondent"
+              alt="N. Ananda Mahani, Principal"
               fill
-              sizes="(max-width: 900px) 100vw, 40vw"
-              className="
-        object-cover object-[center_35%]
-        transition-transform duration-[550ms]
-        ease-[cubic-bezier(0.22,1,0.36,1)]
-        group-hover:scale-[1.04]
-        motion-reduce:transition-none
-      "
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              className="object-cover object-[center_35%] transition-transform duration-[550ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none lg:group-hover:scale-[1.04]"
             />
           </div>
 
-          {/* Caption */}
-          <div className="flex flex-col gap-[5px] border-t-[3px] border-[#c3a365] bg-[#fffdf8] px-4 py-[14px] text-[#064b47] min-[601px]:px-5 min-[601px]:py-[18px]">
-            <strong className="text-[19px] font-semibold">
-           College Leadership
+          <div className="flex flex-col gap-1 border-t-[3px] border-[#c3a365] bg-[#fffdf8] px-4 py-3.5 text-[#064b47] sm:px-5 sm:py-[18px]">
+            <strong className="break-words text-[17px] font-semibold sm:text-[19px]">
+              College Leadership
             </strong>
             <span className="text-[13px] text-[#52635f]">
-              MVN JS & RVR College of Arts & Science
-
+              MVN JS &amp; RVR College of Arts &amp; Science
             </span>
           </div>
         </div>
-        {/* Text Content */}
+
+        {/* TEXT (right) */}
         <div
           ref={contentRef}
-          className={`
-            min-w-0 rounded-[10px] p-4
-            transition-all duration-[750ms]
-            ease-[cubic-bezier(0.22,1,0.36,1)]
-            hover:-translate-y-[3px]
-            hover:bg-[rgba(195,163,101,0.07)]
-            hover:shadow-[0_6px_22px_rgba(7,94,89,0.07)]
-            motion-reduce:transition-none
-            ${contentVisible
+          className={`min-w-0 rounded-[10px] p-0 transition-all duration-[750ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none sm:p-4 lg:hover:-translate-y-[3px] lg:hover:bg-[rgba(195,163,101,0.07)] lg:hover:shadow-[0_6px_22px_rgba(7,94,89,0.07)] ${
+            contentVisible
               ? "translate-x-0 opacity-100"
-              : "-translate-x-12 opacity-0"
-            }
-          `}
+              : "translate-x-6 opacity-0 md:translate-x-12"
+          }`}
         >
-          {/* Eyebrow */}
           <span
-            {...childAnimation(0, contentVisible)}
-            className={`
-              mb-3 inline-block text-xs font-extrabold
-              tracking-[2px] text-[#92723a]
-              ${childAnimation(0, contentVisible).className}
-            `}
+            className={`mb-3 inline-block text-xs font-extrabold tracking-[2px] text-[#92723a] ${childAnimation(0, contentVisible).className}`}
             style={childAnimation(0, contentVisible).style}
           >
-           OUR PRINCIPAL
+            OUR PRINCIPAL
           </span>
 
-          {/* Main Heading */}
           <h2
-            className={`
-              mb-[18px] text-[clamp(28px,3vw,40px)]
-              font-semibold leading-[1.2] text-[#075e59]
-              ${childAnimation(1, contentVisible).className}
-            `}
+            className={`mb-4 break-words text-[clamp(26px,5vw,40px)] font-semibold leading-[1.2] text-[#075e59] ${childAnimation(1, contentVisible).className}`}
             style={childAnimation(1, contentVisible).style}
           >
             N. Ananda Mahani
           </h2>
 
-          {/* Name */}
           <h3
-            className={`
-              mb-[14px] text-[clamp(19px,2vw,25px)]
-              font-semibold leading-[1.4] text-[#064b47]
-              ${childAnimation(2, contentVisible).className}
-            `}
+            className={`mb-3 break-words text-[clamp(18px,3.5vw,25px)] font-semibold leading-[1.4] text-[#064b47] ${childAnimation(2, contentVisible).className}`}
             style={childAnimation(2, contentVisible).style}
           >
-           Principal, M.A.
+            Principal, M.A.
           </h3>
 
-          {/* Divider */}
           <div
-            className={`
-              mb-5 h-[3px] w-[65px] rounded-full bg-[#c3a365]
-              ${childAnimation(3, contentVisible).className}
-            `}
+            className={`mb-5 h-[3px] w-[65px] rounded-full bg-[#c3a365] ${childAnimation(3, contentVisible).className}`}
             style={childAnimation(3, contentVisible).style}
           />
 
-          {/* Description */}
-          <p
-            className={`
-              mb-4 text-base leading-[1.8] text-[#354b4a]
-              text-justify max-[600px]:text-left
-              max-[600px]:text-[15px]
-              ${childAnimation(4, contentVisible).className}
-            `}
-            style={childAnimation(4, contentVisible).style}
-          >
-            Sri M. V. Satyanarayana Murthy serves as the Secretary
-            &amp; Correspondent of MVN JS &amp; RVR College of Arts
-            &amp; Science. He contributes to the institution&apos;s
-            administration, development, and educational mission,
-            supporting its continued growth and service to the
-            community.
-          </p>
-
-          <p
-            className={`
-              mb-4 text-base leading-[1.8] text-[#354b4a]
-              text-justify max-[600px]:text-left
-              max-[600px]:text-[15px]
-              ${childAnimation(5, contentVisible).className}
-            `}
-            style={childAnimation(5, contentVisible).style}
-          >
-            His role supports the smooth functioning of the
-            institution and its commitment to providing a
-            supportive learning environment for students and staff.
-          </p>
-
-          <p
-            className={`
-              mb-4 text-base leading-[1.8] text-[#354b4a]
-              text-justify max-[600px]:text-left
-              max-[600px]:text-[15px]
-              ${childAnimation(6, contentVisible).className}
-            `}
-            style={childAnimation(6, contentVisible).style}
-          >
-            Through his continued guidance and commitment, the institution
-            strives to strengthen its academic standards, improve educational
-            opportunities, and nurture an environment that encourages students
-            to develop their knowledge, skills, and values for a successful future.
-          </p>
+          {paragraphs.map((text, i) => (
+            <p
+              key={i}
+              className={`mb-4 break-words text-[15px] leading-[1.8] text-[#354b4a] last:mb-0 sm:text-base md:text-justify ${childAnimation(4 + i, contentVisible).className}`}
+              style={childAnimation(4 + i, contentVisible).style}
+            >
+              {text}
+            </p>
+          ))}
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 export { default as Text } from "./ui/Text";
 export { default as Container } from "./ui/Container";
+export { default as TopHeader } from "./layout/TopHeader"
 export { default as CollegeHeader } from "./layout/CollegeHeader";
 export {default as Footer} from "./layout/Footer";
 export {default as Navbar} from './layout/Navbar';

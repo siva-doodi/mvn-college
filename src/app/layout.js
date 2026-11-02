@@ -4,7 +4,7 @@ import "./globals.css";
 import {
   CollegeHeader,
   FlashNews,
-  Footer,
+  Footer,TopHeader,
   Navbar,
 } from "@/components";
 
@@ -24,6 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="flex min-h-full flex-col font-sans">
+        <TopHeader />
         <CollegeHeader />
         <Navbar />
         <FlashNews />
