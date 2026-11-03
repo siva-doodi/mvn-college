@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -62,7 +63,7 @@ export default function AlumniPage() {
           if (entry.isIntersecting) {
             entry.target.classList.remove(
               "opacity-0",
-              "translate-y-8"
+              "translate-y-10"
             );
             entry.target.classList.add(
               "opacity-100",
@@ -75,14 +76,12 @@ export default function AlumniPage() {
             );
             entry.target.classList.add(
               "opacity-0",
-              "translate-y-8"
+              "translate-y-10"
             );
           }
         });
       },
-      {
-        threshold: 0.12,
-      }
+      { threshold: 0.12 }
     );
 
     elements.forEach((element) => observer.observe(element));
@@ -96,118 +95,74 @@ export default function AlumniPage() {
       className="min-h-screen w-full bg-[#f5f1e7] py-10 sm:py-12 lg:py-16"
     >
       <Container size="wide">
-        <div
-          className="
-            grid grid-cols-1 gap-5
-            sm:grid-cols-2
-            lg:grid-cols-3 lg:gap-7
-          "
-        >
-          {alumniCards.map(
-            ({ Icon, title, description, linkText, href }, index) => (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
+          {alumniCards.map((card, index) => {
+            const Icon = card.Icon;
+
+            return (
               <article
-                key={title}
+                key={card.title}
                 data-reveal
                 style={{
                   transitionDelay: `${index * 100}ms`,
                 }}
-                className="
-                  group flex min-w-0 min-h-[390px]
-                  flex-col items-start
-                  rounded-[20px]
-                  border border-[#e7e9e6]
-                  bg-white
-                  px-7 py-8
-                  shadow-[0_8px_25px_rgba(0,0,0,0.045)]
-                  opacity-0 translate-y-8
-                  transition-all duration-700 ease-out
-
-                  hover:-translate-y-1
-                  hover:border-[#c3a365]
-                  hover:shadow-[0_12px_30px_rgba(0,0,0,0.08)]
-
-                  sm:min-h-[400px]
-                  lg:px-7 lg:py-9
-                  xl:px-9
-                "
+                className="group relative flex min-w-0 translate-y-10 flex-col overflow-hidden rounded-2xl border border-[#e8e2d4] bg-white p-7 opacity-0 shadow-[0_5px_25px_rgba(6,75,71,0.05)] transition-all duration-700 ease-out hover:-translate-y-2 hover:border-[#c3a365]/60 hover:shadow-[0_18px_40px_rgba(6,75,71,0.12)] sm:p-8"
               >
-                {/* ICON */}
-                <div
-                  className="
-                    flex h-[87px] w-[87px]
-                    shrink-0 items-center justify-center
-                    rounded-[18px]
-                    bg-gradient-to-br from-[#f1f0e7] to-[#d7ebe7]
-                    text-[#006b63]
-                    transition-all duration-300
-                    group-hover:bg-[#006b63]
-                    group-hover:text-white
-                  "
-                >
-                  <Icon size={40} strokeWidth={1.7} />
+                {/* Top Gold Accent */}
+                <div className="absolute left-0 top-0 h-1 w-0 bg-[#c3a365] transition-all duration-500 group-hover:w-full" />
+
+                {/* Decorative Circle */}
+                <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#075e59]/[0.03] transition-transform duration-700 group-hover:scale-150" />
+
+                {/* Icon */}
+                <div className="relative mb-6 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#075e59]/[0.07] text-[#075e59] transition-all duration-500 group-hover:bg-[#075e59] group-hover:text-white group-hover:shadow-lg group-hover:shadow-[#075e59]/20">
+                  <Icon
+                    size={30}
+                    strokeWidth={1.6}
+                    className="transition-transform duration-500 group-hover:scale-110"
+                  />
                 </div>
 
-                {/* TITLE */}
+                {/* Title */}
                 <Text
                   as="h2"
                   variant="h3"
                   color="primary"
-                  className="
-                    mt-5
-                    text-[20px]
-                    font-bold
-                    leading-snug
-                    sm:text-[19px]
-                    lg:text-[19px]
-                    xl:text-[21px]
-                  "
+                  className="font-serif text-xl font-bold leading-snug text-[#064b47] transition-colors duration-300 group-hover:text-[#92723a]"
                 >
-                  {title}
+                  {card.title}
                 </Text>
 
-                {/* DESCRIPTION */}
+                {/* Divider */}
+                <div className="my-5 flex items-center gap-2">
+                  <span className="h-[2px] w-9 bg-[#c3a365] transition-all duration-500 group-hover:w-14" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#c3a365]" />
+                </div>
+
+                {/* Description */}
                 <Text
                   variant="body"
                   color="body"
-                  className="
-                    mt-6
-                    text-[15px]
-                    leading-[1.7]
-                    sm:text-[14px]
-                    lg:text-[14px]
-                    xl:text-[15px]
-                  "
+                  className="flex-1 text-sm leading-7 text-[#647473]"
                 >
-                  {description}
+                  {card.description}
                 </Text>
 
-                {/* LINK */}
+                {/* Link */}
                 <a
-                  href={href}
-                  className="
-                    mt-auto inline-flex items-center gap-2
-                    pt-6
-                    text-[15px]
-                    font-bold
-                    text-[#c3a365]
-                    transition-all duration-300
-                    hover:gap-3
-                    hover:text-[#006b63]
-                    focus-visible:outline-2
-                    focus-visible:outline-offset-4
-                    focus-visible:outline-[#006b63]
-                  "
+                  href={card.href}
+                  className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#92723a] transition-all duration-300 hover:gap-3 hover:text-primary"
                 >
-                  {linkText}
+                  {card.linkText}
                   <ArrowRight
-                    size={19}
-                    strokeWidth={1.8}
+                    size={16}
+                    strokeWidth={2}
                     className="transition-transform duration-300 group-hover:translate-x-1"
                   />
                 </a>
               </article>
-            )
-          )}
+            );
+          })}
         </div>
       </Container>
     </main>

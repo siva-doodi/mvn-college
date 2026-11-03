@@ -1,372 +1,104 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  GraduationCap,
-  BookOpen,
-  Clock,
-  Award,
-  ArrowLeft,
-  CheckCircle2,
-} from "lucide-react";
+import { Banner } from "@/components";
 
-import Text from "@/components/ui/Text";
-import Container from "@/components/ui/Container";
-
-const courses = {
-  ba: {
-    code: "B.A.",
+const coursePages = {
+  "bachelor-of-arts": {
     title: "Bachelor of Arts",
-    duration: "3 Years",
-    eligibility: "10+2 or equivalent examination",
-    description:
-      "The Bachelor of Arts programme provides a broad-based education in humanities and social sciences. It helps students develop critical thinking, communication and analytical skills across a range of disciplines.",
-    highlights: [
-      "Strong foundation in humanities and social sciences",
-      "Development of communication skills",
-      "Critical thinking and analytical abilities",
-      "Opportunities for higher education",
-    ],
-    subjects: [
-      "History",
-      "Political Science",
-      "Economics",
-      "English",
+    code: "B.A.",
+    image: "/assets/Images/courses-banner.jpg",
+    paragraphs: [
+      "The Bachelor of Arts (B.A.) programme at MVN JS & RVR College of Arts & Science provides students with a broad foundation in humanities and social sciences. The programme encourages students to understand society, culture, history and human behaviour through a range of academic disciplines.",
+
+      "The curriculum focuses on developing communication, critical thinking, analytical reasoning and problem-solving abilities. Through classroom learning, discussions, assignments and academic activities, students gain knowledge that supports both personal development and further education.",
+
+      "Graduates of the B.A. programme can explore opportunities in education, public administration, social services, journalism and other professional fields. The programme also provides a foundation for students interested in pursuing postgraduate studies and competitive examinations.",
     ],
   },
 
-  bsc: {
-    code: "B.Sc.",
+  "bachelor-of-science": {
     title: "Bachelor of Science",
-    duration: "3 Years",
-    eligibility: "10+2 with relevant science subjects",
-    description:
-      "The Bachelor of Science programme provides a rigorous science education, fostering logical reasoning and scientific inquiry through core subjects and practical learning experiences.",
-    highlights: [
-      "Strong foundation in scientific concepts",
-      "Practical and laboratory-based learning",
-      "Development of analytical skills",
-      "Preparation for higher studies and careers",
-    ],
-    subjects: [
-      "Mathematics",
-      "Physics",
-      "Chemistry",
-      "Botany",
-      "Zoology",
+    code: "B.Sc.",
+    image: "/assets/Images/courses-banner.jpg",
+    paragraphs: [
+      "The Bachelor of Science (B.Sc.) programme provides students with a strong academic foundation in scientific subjects. The programme encourages curiosity, logical reasoning and an understanding of scientific principles through subjects such as Mathematics, Physics, Chemistry, Botany and Zoology.",
+
+      "Students develop their knowledge through theoretical instruction, practical laboratory sessions and academic activities. The learning approach helps students understand scientific concepts, conduct experiments and develop analytical and problem-solving skills.",
+
+      "The B.Sc. programme prepares students for further education and career opportunities in science, research, education, laboratories and related industries. Students can also pursue postgraduate programmes and specialised professional courses.",
     ],
   },
 
-  bcom: {
-    code: "B.Com.",
+  "bachelor-of-commerce": {
     title: "Bachelor of Commerce",
-    duration: "3 Years",
-    eligibility: "10+2 or equivalent examination",
-    description:
-      "The Bachelor of Commerce programme prepares students for careers in business, finance and accounting with a strong foundation in commerce principles.",
-    highlights: [
-      "Understanding of business and commerce",
-      "Accounting and financial knowledge",
-      "Business management fundamentals",
-      "Preparation for professional careers",
-    ],
-    subjects: [
-      "Financial Accounting",
-      "Business Economics",
-      "Business Management",
-      "Business Law",
+    code: "B.Com.",
+    image: "/assets/Images/courses-banner.jpg",
+    paragraphs: [
+      "The Bachelor of Commerce (B.Com.) programme provides students with a comprehensive understanding of business, commerce, finance and accounting. It introduces students to the principles and practices that support the functioning of modern business organisations.",
+
+      "The programme develops practical knowledge in accounting, business management, financial systems and commercial operations. Students are encouraged to strengthen their numerical, analytical, communication and decision-making abilities through academic learning and practical assignments.",
+
+      "Graduates can explore career opportunities in accounting, banking, finance, taxation, business administration and other commercial sectors. The programme also provides a foundation for higher studies and professional qualifications.",
     ],
   },
 
-  bca: {
-    code: "BCA",
+  "bachelor-of-computer-applications": {
     title: "Bachelor of Computer Applications",
-    duration: "3 Years",
-    eligibility: "10+2 or equivalent examination",
-    description:
-      "The Bachelor of Computer Applications programme provides an applied computing education, equipping students with essential knowledge in programming, software development and information technology.",
-    highlights: [
-      "Programming and computer fundamentals",
-      "Software development concepts",
-      "Practical computing knowledge",
-      "Preparation for IT careers",
-    ],
-    subjects: [
-      "Programming in C",
-      "Database Management Systems",
-      "Web Technologies",
-      "Computer Networks",
-      "Software Engineering",
+    code: "BCA",
+    image: "/assets/Images/courses-banner.jpg",
+    paragraphs: [
+      "The Bachelor of Computer Applications (BCA) programme introduces students to the fundamentals of computer science and information technology. It is designed for students interested in programming, software development and the growing digital technology sector.",
+
+      "The curriculum focuses on programming concepts, computer applications, database management and software development. Through practical sessions and academic projects, students develop technical knowledge, logical thinking and problem-solving skills.",
+
+      "Graduates can explore opportunities in software development, web technologies, IT support, application development and related technology fields. The programme also supports students who wish to pursue advanced studies in computer applications and information technology.",
     ],
   },
 };
 
-export function generateStaticParams() {
-  return Object.keys(courses).map((slug) => ({
-    slug,
-  }));
-}
-
-export default async function CourseDetailsPage({ params }) {
+export default async function CoursePage({ params }) {
   const { slug } = await params;
-
-  const course = courses[slug.toLowerCase()];
+  const course = coursePages[slug];
 
   if (!course) {
     notFound();
   }
 
   return (
-    <main className="min-h-screen bg-[#fffdf8]">
+    <main className="min-h-screen bg-background">
+      {/* Image Only Banner */}
+      <Banner image={course.image} />
 
-      {/* PAGE BANNER */}
-      <section className="border-b border-[#e8dcc7] bg-[#f5f1e7] py-12 sm:py-16 lg:py-20">
-        <Container size="wide">
-          <Link
-            href="/"
-            className="mb-7 inline-flex items-center gap-2 text-sm font-semibold text-[#00645c] transition-colors hover:text-[#b18a46]"
-          >
-            <ArrowLeft size={17} />
-            Back to Home
-          </Link>
+      {/* Course Description */}
+      <section className="py-14 sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12">
 
-          <Text
-            variant="eyebrow"
-            color="goldMuted"
-            className="mb-3"
-          >
-            ACADEMIC PROGRAMMES
-          </Text>
+          {/* Heading */}
+          <div className="mb-9">
+            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-muted">
+              {course.code} Programme
+            </span>
 
-          <Text
-            as="h1"
-            variant="h1"
-            color="primary"
-            className="text-[32px] leading-tight sm:text-[40px] lg:text-[48px]"
-          >
-            {course.title}
-          </Text>
+            <h1 className="mt-3 font-serif text-3xl font-bold leading-tight text-primary sm:text-4xl lg:text-5xl">
+              {course.title}
+            </h1>
 
-          <Text
-            color="muted"
-            className="mt-4 max-w-2xl text-sm leading-7 sm:text-base"
-          >
-            Explore the programme details, eligibility, duration
-            and academic opportunities offered at MVN JS & RVR
-            College of Arts & Science.
-          </Text>
-        </Container>
-      </section>
-
-      {/* COURSE CONTENT */}
-      <section className="py-12 sm:py-16 lg:py-20">
-        <Container size="wide">
-
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.7fr_1fr] lg:gap-12">
-
-            {/* LEFT CONTENT */}
-            <div className="space-y-8">
-
-              {/* COURSE INTRODUCTION */}
-              <div className="rounded-2xl border border-[#eadcc2] bg-white p-6 shadow-sm sm:p-8">
-
-                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[#edf2ef] text-[#006b63]">
-                  <GraduationCap size={30} strokeWidth={1.6} />
-                </div>
-
-                <Text
-                  as="h2"
-                  variant="h2"
-                  color="primary"
-                  className="mb-4 text-[24px] sm:text-[28px]"
-                >
-                  About the Programme
-                </Text>
-
-                <Text
-                  color="body"
-                  className="text-sm leading-7 sm:text-base sm:leading-8"
-                >
-                  {course.description}
-                </Text>
-              </div>
-
-              {/* COURSE HIGHLIGHTS */}
-              <div className="rounded-2xl border border-[#eadcc2] bg-white p-6 shadow-sm sm:p-8">
-
-                <Text
-                  as="h2"
-                  variant="h2"
-                  color="primary"
-                  className="mb-6 text-[23px] sm:text-[27px]"
-                >
-                  Programme Highlights
-                </Text>
-
-                <div className="space-y-4">
-                  {course.highlights.map((item) => (
-                    <div
-                      key={item}
-                      className="flex items-start gap-3"
-                    >
-                      <CheckCircle2
-                        size={19}
-                        className="mt-1 shrink-0 text-[#08766c]"
-                      />
-
-                      <Text
-                        color="body"
-                        className="text-sm leading-6 sm:text-base"
-                      >
-                        {item}
-                      </Text>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* SUBJECTS */}
-              <div className="rounded-2xl border border-[#eadcc2] bg-white p-6 shadow-sm sm:p-8">
-
-                <Text
-                  as="h2"
-                  variant="h2"
-                  color="primary"
-                  className="mb-6 text-[23px] sm:text-[27px]"
-                >
-                  Subjects Offered
-                </Text>
-
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  {course.subjects.map((subject) => (
-                    <div
-                      key={subject}
-                      className="flex items-center gap-3 rounded-lg border border-[#eee3d1] bg-[#faf7f0] px-4 py-3"
-                    >
-                      <BookOpen
-                        size={17}
-                        className="shrink-0 text-[#08766c]"
-                      />
-
-                      <Text
-                        color="body"
-                        className="text-sm font-medium"
-                      >
-                        {subject}
-                      </Text>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-
-            {/* RIGHT SIDEBAR */}
-            <aside className="h-fit rounded-2xl border border-[#e8d7b9] bg-[#f7f2e8] p-6 sm:p-8">
-
-              <Text
-                as="h2"
-                variant="h3"
-                color="primary"
-                className="mb-6 text-[23px]"
-              >
-                Course Information
-              </Text>
-
-              <div className="space-y-6">
-
-                <div className="flex items-start gap-4">
-                  <div className="rounded-lg bg-white p-3 text-[#08766c]">
-                    <GraduationCap size={21} />
-                  </div>
-
-                  <div>
-                    <Text
-                      color="muted"
-                      className="text-xs"
-                    >
-                      Programme
-                    </Text>
-
-                    <Text
-                      color="primary"
-                      weight="semibold"
-                      className="mt-1 text-sm"
-                    >
-                      {course.code}
-                    </Text>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="rounded-lg bg-white p-3 text-[#08766c]">
-                    <Clock size={21} />
-                  </div>
-
-                  <div>
-                    <Text
-                      color="muted"
-                      className="text-xs"
-                    >
-                      Duration
-                    </Text>
-
-                    <Text
-                      color="primary"
-                      weight="semibold"
-                      className="mt-1 text-sm"
-                    >
-                      {course.duration}
-                    </Text>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="rounded-lg bg-white p-3 text-[#08766c]">
-                    <Award size={21} />
-                  </div>
-
-                  <div>
-                    <Text
-                      color="muted"
-                      className="text-xs"
-                    >
-                      Eligibility
-                    </Text>
-
-                    <Text
-                      color="primary"
-                      weight="semibold"
-                      className="mt-1 text-sm leading-6"
-                    >
-                      {course.eligibility}
-                    </Text>
-                  </div>
-                </div>
-
-              </div>
-
-              <div className="mt-8 border-t border-[#e4d5b9] pt-6">
-                <Text
-                  color="body"
-                  className="mb-4 text-sm leading-6"
-                >
-                  Interested in joining MVN JS & RVR College?
-                </Text>
-
-                <Link
-                  href="/contact"
-                  className="flex w-full items-center justify-center rounded-lg bg-[#00645c] px-5 py-3 text-sm font-semibold text-white transition-all hover:bg-[#004e48]"
-                >
-                  Contact College
-                </Link>
-              </div>
-
-            </aside>
+            <div className="mt-5 h-1 w-16 rounded-full bg-secondary" />
           </div>
 
-        </Container>
-      </section>
+          {/* Three Paragraphs */}
+          <div className="space-y-7">
+            {course.paragraphs.map((paragraph, index) => (
+              <p
+                key={index}
+                className="text-justify text-sm leading-8 text-foreground sm:text-base sm:leading-9"
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
 
+        </div>
+      </section>
     </main>
   );
 }

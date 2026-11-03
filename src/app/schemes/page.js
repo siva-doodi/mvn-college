@@ -15,6 +15,7 @@ import {
 
 import Text from "@/components/ui/Text";
 import Container from "@/components/ui/Container";
+import { Banner } from "@/components";
 
 const schemes = [
   {
@@ -186,60 +187,7 @@ export default function SchemesPage() {
     >
       {/* ================= HERO SECTION ================= */}
 
-      <section className="bg-[#f5f1e7] py-16 sm:py-20 lg:py-24">
-        <Container size="wide">
-          <div className="mx-auto max-w-3xl text-center">
-            <Reveal
-              id="hero-label"
-              visibleItems={visibleItems}
-            >
-              <Text
-                variant="eyebrow"
-                color="goldMuted"
-                className="mb-4 text-[11px] tracking-[2.5px] sm:text-[13px]"
-              >
-                STUDENT SUPPORT & WELFARE
-              </Text>
-            </Reveal>
-
-            <Reveal
-              id="hero-title"
-              visibleItems={visibleItems}
-            >
-              <Text
-                as="h1"
-                variant="h1"
-                color="primary"
-                className="text-[30px] leading-tight sm:text-[40px] lg:text-[46px]"
-              >
-                Scholarships & Schemes
-              </Text>
-            </Reveal>
-
-            <Reveal
-              id="hero-description"
-              visibleItems={visibleItems}
-            >
-              <Text
-                color="body"
-                className="mx-auto mt-5 max-w-2xl text-[13px] leading-7 sm:text-[15px]"
-              >
-                Explore scholarship opportunities and student
-                welfare schemes designed to support education,
-                encourage academic excellence and make higher
-                education accessible to all.
-              </Text>
-            </Reveal>
-
-            <Reveal
-              id="hero-divider"
-              visibleItems={visibleItems}
-            >
-              <div className="mx-auto mt-6 h-[3px] w-14 rounded-full bg-[#c3a365]" />
-            </Reveal>
-          </div>
-        </Container>
-      </section>
+      <Banner />
 
       {/* ================= AVAILABLE SCHEMES ================= */}
 

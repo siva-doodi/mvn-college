@@ -36,7 +36,7 @@ const navItems = [
     icon: GraduationCap,
     children: [
       { label: "Departments", href: "/academics/departments" },
-      { label: "Courses", href: "/academics/courses" },
+      { label: "Courses", href: "/courses" },
       { label: "Calendar", href: "/academics/calendar" },
     ],
   },
@@ -45,9 +45,9 @@ const navItems = [
     href: "/support-services",
     icon: BookOpen,
     children: [
-      { label: "Library", href: "/support-services/library" },
-      { label: "Hostel", href: "/support-services/hostel" },
-      { label: "Sports", href: "/support-services/sports" },
+      { label: "Library", href: "/facilities/library" },
+      { label: "Hostel", href: "/facilities/hostel" },
+      { label: "Sports", href: "/facilities/sports" },
     ],
   },
   { label: "NAAC/IQAC", href: "/naac-iqac", icon: Building2 },
