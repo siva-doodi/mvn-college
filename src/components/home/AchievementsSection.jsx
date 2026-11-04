@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import {
   ShieldCheck,
@@ -13,6 +13,7 @@ const items = [
     Icon: ShieldCheck,
     label: "NAAC Accreditation",
     headline: "Accredited by NAAC",
+    slug: "naac-accreditation",
     detail:
       "The college was accredited by the National Assessment and Accreditation Council (NAAC) with a B grade and a score of 2.78 in 2016.",
     badge: "NAAC – B Grade",
@@ -21,6 +22,7 @@ const items = [
     Icon: BookMarked,
     label: "UGC Recognition",
     headline: "UGC Recognised Institution",
+     slug: "naac-accreditation",
     detail:
       "MVN JS & RVR College of Arts & Science operates as a UGC-recognised institution affiliated to Dr. B.R. Ambedkar Open University, offering approved undergraduate and postgraduate programmes.",
     badge: "UGC Recognised",
@@ -29,6 +31,7 @@ const items = [
     Icon: Star,
     label: "Centre of Excellence",
     headline: "Centre of Excellence",
+     slug: "naac-accreditation",
     detail:
       "The institution has been recognised as a Centre of Excellence in higher education, committed to providing quality, value-based education to rural students at an affordable fee structure.",
     badge: "Recognised — Higher Education",
@@ -37,6 +40,7 @@ const items = [
     Icon: TrendingUp,
     label: "Academic Milestones",
     headline: "Five Decades of Service",
+     slug: "naac-accreditation",
     detail:
       "Established in 1972, the college has served the Konaseema region for over five decades. It participates in the Unnat Bharat Abhiyan and the Andhra Pradesh State Skill Development Corporation initiatives.",
     badge: "Est. 1972",
@@ -139,18 +143,20 @@ export default function Achievements() {
         </div>
 
         {/* Achievement Cards */}
+
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
           {items.map(
-            ({ Icon, label, headline, detail, badge }, index) => (
-              <article
+            ({ Icon, label, headline, detail, badge, slug }, index) => (
+              <Link
                 key={label}
+                href={`/achievements/${slug}`}
                 ref={(el) => {
                   cardsRef.current[index] = el;
                 }}
                 style={{
                   transitionDelay: `${index * 130}ms`,
                 }}
-                className="group relative translate-y-10 overflow-hidden rounded-2xl border border-[#e8e2d4] bg-white p-7 opacity-0 shadow-[0_5px_25px_rgba(6,75,71,0.05)] transition-all duration-700 ease-out hover:-translate-y-2 hover:border-[#c3a365]/60 hover:shadow-[0_18px_40px_rgba(6,75,71,0.12)] sm:p-8"
+                className="group relative block translate-y-10 overflow-hidden rounded-2xl border border-[#e8e2d4] bg-white p-7 opacity-0 shadow-[0_5px_25px_rgba(6,75,71,0.05)] transition-all duration-700 ease-out hover:-translate-y-2 hover:border-[#c3a365]/60 hover:shadow-[0_18px_40px_rgba(6,75,71,0.12)] sm:p-8"
               >
                 {/* Top Gold Accent */}
                 <div className="absolute left-0 top-0 h-1 w-0 bg-[#c3a365] transition-all duration-500 group-hover:w-full" />
@@ -187,18 +193,11 @@ export default function Achievements() {
                 <p className="text-sm leading-7 text-[#647473]">
                   {detail}
                 </p>
-
-                {/* Badge */}
-                <div className="mt-7">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-[#c3a365]/30 bg-[#c3a365]/10 px-3.5 py-2 text-xs font-bold text-[#80632f]">
-                    <ShieldCheck size={14} />
-                    {badge}
-                  </span>
-                </div>
-              </article>
+              </Link>
             )
           )}
         </div>
+
       </div>
     </section>
   );

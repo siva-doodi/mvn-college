@@ -1,6 +1,9 @@
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+
 import {
   GraduationCap,
   Building2,
@@ -15,24 +18,28 @@ const features = [
     number: "01",
     title: "Academic Excellence",
     desc: "Quality education across Arts, Science and Commerce, supported by experienced and dedicated faculty.",
+    slug: "academic-excellence",
   },
   {
     Icon: Building2,
     number: "02",
     title: "Established Legacy",
     desc: "Established in 1972, with a long-standing commitment to higher education in the Konaseema region.",
+    slug: "established-legacy",
   },
   {
     Icon: Users,
     number: "03",
     title: "Student Development",
     desc: "Opportunities for academic learning, extracurricular activities, sports and overall personal development.",
+    slug: "student-development",
   },
   {
     Icon: Heart,
     number: "04",
     title: "Supportive Campus",
     desc: "A welcoming and inclusive learning environment that encourages every student to grow and succeed.",
+    slug: "supportive-campus",
   },
 ];
 
@@ -97,10 +104,7 @@ export default function WhyChooseSection() {
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
-        {/* --------------------------------
-            Section Heading
-        -------------------------------- */}
-
+        {/* Section Heading */}
         <div
           ref={headingRef}
           className={`mx-auto mb-12 max-w-3xl text-center transition-all duration-1000 ease-out sm:mb-16 ${
@@ -109,7 +113,6 @@ export default function WhyChooseSection() {
               : "translate-y-8 opacity-0"
           }`}
         >
-          {/* Eyebrow */}
           <div className="mb-5 flex items-center justify-center gap-3">
             <span className="h-px w-9 bg-secondary" />
 
@@ -120,15 +123,12 @@ export default function WhyChooseSection() {
             <span className="h-px w-9 bg-secondary" />
           </div>
 
-          {/* Title */}
           <h2 className="font-serif text-3xl font-semibold leading-tight text-primary sm:text-4xl lg:text-[42px]">
             Why Choose MVN JS &amp; RVR College?
           </h2>
 
-          {/* Divider */}
           <div className="mx-auto mt-6 h-[3px] w-16 rounded-full bg-secondary" />
 
-          {/* Description */}
           <p className="mx-auto mt-6 max-w-2xl font-sans text-sm leading-7 text-muted sm:text-base">
             Building a strong foundation for academic excellence, personal
             growth and a brighter future through quality education and
@@ -136,30 +136,28 @@ export default function WhyChooseSection() {
           </p>
         </div>
 
-        {/* --------------------------------
-            Features Grid
-        -------------------------------- */}
-
+        {/* Features Grid */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 
-          {features.map(({ Icon, number, title, desc }, index) => {
+          {features.map(({ Icon, number, title, desc, slug }, index) => {
             const isVisible = visibleCards.includes(index);
 
             return (
-              <article
-                key={title}
+              <Link
+                key={slug}
+                href={`/why-choose-us/${slug}`}
                 ref={(el) => {
                   cardsRef.current[index] = el;
                 }}
                 data-index={index}
-                className={`group relative flex min-h-[300px] flex-col overflow-hidden rounded-sm border border-secondary/20 bg-background-card p-7 shadow-sm transition-all duration-700 ease-out hover:-translate-y-2 hover:border-secondary/60 hover:shadow-xl sm:p-8 ${
+                style={{
+                  transitionDelay: `${index * 120}ms`,
+                }}
+                className={`group relative flex min-h-[300px] flex-col overflow-hidden rounded-sm border border-secondary/20 bg-background-card p-7 shadow-sm transition-all duration-700 ease-out hover:-translate-y-2 hover:border-secondary/60 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:p-8 ${
                   isVisible
                     ? "translate-y-0 opacity-100"
                     : "translate-y-10 opacity-0"
                 }`}
-                style={{
-                  transitionDelay: `${index * 120}ms`,
-                }}
               >
                 {/* Number */}
                 <span className="absolute right-6 top-5 font-serif text-4xl font-bold text-primary/5 transition-colors duration-500 group-hover:text-secondary/20">
@@ -199,7 +197,7 @@ export default function WhyChooseSection() {
 
                 {/* Bottom Hover Border */}
                 <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-primary transition-all duration-500 group-hover:w-full" />
-              </article>
+              </Link>
             );
           })}
 

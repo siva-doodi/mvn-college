@@ -109,7 +109,7 @@ const socialLinks = [
 
 export default function TopHeader() {
   return (
-    <header className="w-full bg-primary-dark text-white ">
+    <header className="w-full bg-primary text-white ">
      <div className="mx-auto hidden max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8 sm:flex">
 
         {/* Left Side - Social Media */}

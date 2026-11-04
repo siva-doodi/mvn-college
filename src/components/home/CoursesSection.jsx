@@ -1,6 +1,9 @@
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+
 import {
   BookOpen,
   FlaskConical,
@@ -14,24 +17,28 @@ const courses = [
     Icon: BookOpen,
     code: "B.A.",
     title: "Bachelor of Arts",
+    slug: "bachelor-of-arts",
     desc: "A broad-based programme in the humanities and social sciences, developing critical thinking, communication and analytical skills across a range of disciplines.",
   },
   {
     Icon: FlaskConical,
     code: "B.Sc.",
     title: "Bachelor of Science",
+    slug: "bachelor-of-science",
     desc: "A rigorous science programme fostering logical reasoning and scientific inquiry through core subjects in Mathematics, Physics, Chemistry, Botany and Zoology.",
   },
   {
     Icon: BarChart3,
     code: "B.Com.",
     title: "Bachelor of Commerce",
+    slug: "bachelor-of-commerce",
     desc: "Prepares students for careers in business, finance and accounting with a strong foundation in commerce principles, including General and Computer Applications streams.",
   },
   {
     Icon: Monitor,
     code: "BCA",
     title: "Bachelor of Computer Applications",
+    slug: "bachelor-of-computer-applications",
     desc: "An applied computing programme equipping students with essential knowledge in programming, software development and information technology for a digital career.",
   },
 ];
@@ -98,10 +105,7 @@ export default function CoursesSection() {
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
-        {/* --------------------------------
-            Section Heading
-        -------------------------------- */}
-
+        {/* Section Heading */}
         <div
           ref={headingRef}
           className={`mx-auto mb-12 max-w-3xl text-center transition-all duration-1000 ease-out sm:mb-16 ${
@@ -136,30 +140,28 @@ export default function CoursesSection() {
           <div className="mx-auto mt-6 h-[3px] w-16 rounded-full bg-secondary" />
         </div>
 
-        {/* --------------------------------
-            Course Cards
-        -------------------------------- */}
-
+        {/* Course Cards */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 
-          {courses.map(({ Icon, code, title, desc }, index) => {
+          {courses.map(({ Icon, code, title, desc, slug }, index) => {
             const isVisible = visibleCards.includes(index);
 
             return (
-              <article
-                key={code}
+              <Link
+                key={slug}
+                href={`/courses/${slug}`}
                 ref={(el) => {
                   cardsRef.current[index] = el;
                 }}
                 data-index={index}
-                className={`group relative flex min-h-[390px] flex-col overflow-hidden rounded-sm border border-secondary/20 bg-background-card shadow-sm transition-all duration-700 ease-out hover:-translate-y-2 hover:border-secondary/60 hover:shadow-xl ${
+                style={{
+                  transitionDelay: `${index * 130}ms`,
+                }}
+                className={`group relative flex min-h-[390px] flex-col overflow-hidden rounded-sm border border-secondary/20 bg-background-card shadow-sm transition-all duration-700 ease-out hover:-translate-y-2 hover:border-secondary/60 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary ${
                   isVisible
                     ? "translate-y-0 opacity-100"
                     : "translate-y-10 opacity-0"
                 }`}
-                style={{
-                  transitionDelay: `${index * 130}ms`,
-                }}
               >
                 {/* Gold Top Accent */}
                 <div className="h-[4px] w-full bg-secondary transition-all duration-500 group-hover:h-[6px] group-hover:bg-primary" />
@@ -208,19 +210,16 @@ export default function CoursesSection() {
                     />
                   </div>
                 </div>
-              </article>
+              </Link>
             );
           })}
 
         </div>
 
-        {/* --------------------------------
-            Explore Courses Button
-        -------------------------------- */}
-
+        {/* Explore Courses Button */}
         <div className="mt-12 flex justify-center sm:mt-14">
-          <a
-            href="#courses-programmes"
+          <Link
+            href="/academic/courses"
             className="group inline-flex items-center gap-3 rounded-sm bg-primary px-7 py-4 font-sans text-sm font-semibold tracking-wide text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-primary-dark hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
           >
             Explore All Courses
@@ -229,7 +228,7 @@ export default function CoursesSection() {
               size={18}
               className="transition-transform duration-300 group-hover:translate-x-1"
             />
-          </a>
+          </Link>
         </div>
 
       </div>

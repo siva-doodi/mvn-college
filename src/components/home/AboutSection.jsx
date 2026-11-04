@@ -147,7 +147,7 @@ export default function AboutSection() {
             <div className="relative overflow-hidden rounded-2xl border border-secondary/30 bg-background-secondary p-3 shadow-xl">
               <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
                 <Image
-                  src="/dggd"
+                  src="/images/Vintage College Emblem Collage.png"
                   alt="MVN JS and RVR College campus buildings and emblem"
                   fill
                   priority={false}

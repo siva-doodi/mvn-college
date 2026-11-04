@@ -1,31 +1,37 @@
+
 "use client";
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 const activities = [
   {
     image: "/assets/Images/Nss.jpeg",
     title: "NSS & Community Service",
+    slug: "nss-community-service",
     desc: "Students participate in the National Service Scheme, contributing to community welfare, social awareness programmes and rural development activities.",
     alt: "MVN college students participating in an NSS community service activity",
   },
   {
     image: "/assets/Images/Sports.jpeg",
     title: "Sports & Games",
+    slug: "sports-and-games",
     desc: "The college encourages participation in sports and physical activities, helping students build fitness, discipline and a spirit of healthy competition.",
     alt: "MVN college students participating in a sports activity",
   },
   {
     image: "/assets/Images/Culturals.jpeg",
     title: "Cultural Activities",
+    slug: "cultural-activities",
     desc: "Vibrant cultural events, college day celebrations and programmes that nurture creativity, artistic expression and a shared sense of community.",
     alt: "MVN college students performing a cultural dance",
   },
   {
     image: "/assets/Images/Seminars.jpeg",
     title: "Seminars & Workshops",
+    slug: "seminars-and-workshops",
     desc: "Regular seminars, workshops and guest lectures that expose students to current academic developments, career guidance and skill-building opportunities.",
     alt: "Seminar or workshop conducted at MVN college",
   },
@@ -144,16 +150,18 @@ export default function LifeAtMVN() {
 
         {/* Activities Grid */}
         <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-          {activities.map(({ image, title, desc, alt }, index) => (
-            <div
-              key={title}
+
+          {activities.map(({ image, title, desc, alt, slug }, index) => (
+            <Link
+              key={slug}
+              href={`/life-at-mvn/${slug}`}
               ref={(el) => {
                 cardsRef.current[index] = el;
               }}
               style={{
                 transitionDelay: `${index * 120}ms`,
               }}
-              className="group translate-y-10 overflow-hidden rounded-2xl border border-[#e8e2d4] bg-white opacity-0 shadow-[0_5px_25px_rgba(6,75,71,0.05)] transition-all duration-700 ease-out hover:-translate-y-2 hover:border-[#c3a365]/60 hover:shadow-[0_18px_40px_rgba(6,75,71,0.12)]"
+              className="group block translate-y-10 overflow-hidden rounded-2xl border border-[#e8e2d4] bg-white opacity-0 shadow-[0_5px_25px_rgba(6,75,71,0.05)] transition-all duration-700 ease-out hover:-translate-y-2 hover:border-[#c3a365]/60 hover:shadow-[0_18px_40px_rgba(6,75,71,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#075e59]"
             >
               {/* Image */}
               <div className="relative h-56 overflow-hidden sm:h-52 lg:h-56">
@@ -197,8 +205,9 @@ export default function LifeAtMVN() {
                 </div>
 
               </div>
-            </div>
+            </Link>
           ))}
+
         </div>
 
         {/* Bottom Message */}

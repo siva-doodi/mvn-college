@@ -25,9 +25,9 @@ const navItems = [
     href: "/administration",
     icon: ShieldCheck,
     children: [
-      { label: "Principal", href: "/administration/principal" },
       { label: "Governing Body", href: "/administration/governing-body" },
-      { label: "Office Staff", href: "/administration/staff" },
+      { label: " Principal", href: "/administration/principal" },
+      { label: "Academic Council", href: "/administration/academic-council" },
     ],
   },
   {
@@ -35,9 +35,9 @@ const navItems = [
     href: "/academics",
     icon: GraduationCap,
     children: [
-      { label: "Departments", href: "/academics/departments" },
+      { label: "Departments", href: "/departments" },
       { label: "Courses", href: "/courses" },
-      { label: "Calendar", href: "/academics/calendar" },
+      { label: "Calendar", href: "/calendar" },
     ],
   },
   {
@@ -72,7 +72,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-t-[3px] border-[#c3a365] bg-[#00645f] shadow-md">
+    <header className="sticky top-0 z-50 w-full border-t-[3px] border-[#c3a365] bg-primary shadow-md">
 
       <nav
         aria-label="Main navigation"
